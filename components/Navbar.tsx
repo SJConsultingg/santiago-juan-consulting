@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import LanguageSelector from './LanguageSelector';
-import Logo from './Logo';
+import StaticLogo from './StaticLogo';
 
 interface NavbarProps {
   dictionary?: {
@@ -101,7 +101,7 @@ export default function Navbar({ dictionary, lang }: NavbarProps = {}) {
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
         >
-          <Logo priority />
+          <StaticLogo />
         </motion.a>
 
         {/* Menú de navegación - Desktop */}
