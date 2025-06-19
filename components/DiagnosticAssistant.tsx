@@ -101,11 +101,11 @@ export default function DiagnosticAssistant({ dictionary }: { dictionary: Dictio
       // Procesar y limpiar la respuesta para español
       if (!isEnglish) {
         // Limitar la longitud de los campos para español
-        if (data.reason && data.reason.length > 150) {
-          data.reason = data.reason.substring(0, 150) + '...';
+        if (data.reason && data.reason.length > 200) {
+          data.reason = data.reason.substring(0, 200) + '...';
         }
-        if (data.value && data.value.length > 100) {
-          data.value = data.value.substring(0, 100) + '...';
+        if (data.value && data.value.length > 150) {
+          data.value = data.value.substring(0, 150) + '...';
         }
         
         // Asegurarse de que el servicio principal tenga un formato limpio
@@ -116,8 +116,8 @@ export default function DiagnosticAssistant({ dictionary }: { dictionary: Dictio
           }
           
           // Limitar longitud del título del servicio
-          if (data.mainService.length > 30) {
-            data.mainService = data.mainService.substring(0, 30) + '...';
+          if (data.mainService.length > 50) {
+            data.mainService = data.mainService.substring(0, 50) + '...';
           }
         }
         
@@ -128,8 +128,8 @@ export default function DiagnosticAssistant({ dictionary }: { dictionary: Dictio
               data.complementaryService.slice(1).toLowerCase();
           }
           
-          if (data.complementaryService.length > 30) {
-            data.complementaryService = data.complementaryService.substring(0, 30) + '...';
+          if (data.complementaryService.length > 50) {
+            data.complementaryService = data.complementaryService.substring(0, 50) + '...';
           }
         }
       }
@@ -486,10 +486,7 @@ export default function DiagnosticAssistant({ dictionary }: { dictionary: Dictio
               variants={itemVariants}
             >
               {/* Mostrar la razón de la recomendación */}
-              {isEnglish ? 
-                (aiResponse?.reason || serviceContent[recommendation].description) :
-                (aiResponse?.reason || serviceContent[recommendation].description)
-              }
+              {aiResponse?.reason || serviceContent[recommendation].description}
             </motion.p>
             
             {/* Valor - mostrado solo si viene de la IA */}

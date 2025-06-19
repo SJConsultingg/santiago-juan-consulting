@@ -31,13 +31,13 @@ REGLAS CRUCIALES:
 - El servicio COMPLEMENTARIO debe abordar el segundo problema más importante.
 
 IMPORTANTE: Debes proporcionar una respuesta estructurada con estos elementos:
-- SERVICIO PRINCIPAL: Nombre del servicio principal recomendado (MÁXIMO 5 PALABRAS)
-- SERVICIO COMPLEMENTARIO (obligatorio si detectas múltiples problemas): Un servicio adicional que complementa al principal (MÁXIMO 5 PALABRAS)
-- RAZÓN: Por qué estos servicios son los más adecuados (MÁXIMO 2 LÍNEAS), mencionando específicamente los problemas detectados
-- VALOR: Qué beneficios principales obtendrá el cliente (MÁXIMO 1 LÍNEA)
-- ACCIÓN: Sugerir agendar una llamada gratuita de diagnóstico (MÁXIMO 1 LÍNEA)
+- SERVICIO PRINCIPAL: Nombre del servicio principal recomendado (MÁXIMO 30 CARACTERES)
+- SERVICIO COMPLEMENTARIO (obligatorio si detectas múltiples problemas): Un servicio adicional que complementa al principal (MÁXIMO 30 CARACTERES)
+- RAZÓN: Por qué estos servicios son los más adecuados (MÁXIMO 120 CARACTERES), mencionando específicamente los problemas detectados
+- VALOR: Qué beneficios principales obtendrá el cliente (MÁXIMO 80 CARACTERES)
+- ACCIÓN: Sugerir agendar una llamada gratuita de diagnóstico (MÁXIMO 80 CARACTERES)
 
-EXTREMADAMENTE IMPORTANTE: Tus respuestas deben ser CONCISAS y BREVES. No uses más de 5 palabras para los nombres de servicios, 2 líneas para la razón, y 1 línea para el valor y la acción.
+IMPORTANTE: Tus respuestas deben ser INFORMATIVAS pero CONCISAS. Proporciona suficiente contexto para que el cliente entienda por qué recomiendas ese servicio, pero sin extenderte demasiado.
 
 Mantén un tono profesional pero cercano. No inventes información adicional sobre los servicios.`;
   } else {
@@ -161,11 +161,11 @@ export function extractStructuredResponse(aiResponse: string) {
   
   if (isSpanish) {
     // Limitar longitud de los campos en español
-    if (mainService.length > 30) mainService = mainService.substring(0, 30) + '...';
-    if (complementaryService.length > 30) complementaryService = complementaryService.substring(0, 30) + '...';
-    if (reason.length > 150) reason = reason.substring(0, 150) + '...';
-    if (value.length > 100) value = value.substring(0, 100) + '...';
-    if (action.length > 100) action = action.substring(0, 100) + '...';
+    if (mainService.length > 50) mainService = mainService.substring(0, 50) + '...';
+    if (complementaryService.length > 50) complementaryService = complementaryService.substring(0, 50) + '...';
+    if (reason.length > 200) reason = reason.substring(0, 200) + '...';
+    if (value.length > 150) value = value.substring(0, 150) + '...';
+    if (action.length > 150) action = action.substring(0, 150) + '...';
     
     // Convertir a título si está en mayúsculas
     if (mainService === mainService.toUpperCase()) {
