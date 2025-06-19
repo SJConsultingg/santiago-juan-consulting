@@ -88,12 +88,12 @@ export default function ServicesSection({ dictionary, sectionId = "servicios" }:
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
+    hidden: { opacity: 0, y: 10 },
     visible: {
       opacity: 1,
       y: 0,
       transition: {
-        duration: 0.5,
+        duration: 0.3,
       },
     },
   };
@@ -104,13 +104,13 @@ export default function ServicesSection({ dictionary, sectionId = "servicios" }:
       scale: 1,
       boxShadow: "0px 10px 30px rgba(0, 0, 0, 0.05)",
       backgroundColor: "rgba(255, 255, 255, 0.5)",
-      transition: { duration: 0.3, ease: "easeOut" }
+      transition: { duration: 0.2, ease: "easeOut" }
     },
     hover: { 
-      scale: 1.03, 
+      scale: 1.02, 
       boxShadow: "0px 20px 40px rgba(0, 0, 0, 0.1)",
       backgroundColor: "rgba(255, 255, 255, 0.8)",
-      transition: { duration: 0.3, ease: "easeOut" }
+      transition: { duration: 0.2, ease: "easeOut" }
     }
   };
 
@@ -118,12 +118,12 @@ export default function ServicesSection({ dictionary, sectionId = "servicios" }:
     rest: { 
       scale: 1,
       rotate: 0,
-      transition: { duration: 0.3, ease: "easeOut" }
+      transition: { duration: 0.2, ease: "easeOut" }
     },
     hover: { 
-      scale: 1.1, 
-      rotate: 5,
-      transition: { duration: 0.3, ease: "easeOut" }
+      scale: 1.05, 
+      rotate: 3,
+      transition: { duration: 0.2, ease: "easeOut" }
     }
   };
 
@@ -131,10 +131,10 @@ export default function ServicesSection({ dictionary, sectionId = "servicios" }:
     <section id={sectionId} className="relative py-24">
       <div className="container relative">
         <motion.div 
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.5 }}
+          viewport={{ once: true, margin: "-50px" }}
           className="max-w-3xl mx-auto mb-20 text-center"
         >
           <h2 className="mb-6 text-4xl font-bold text-secondary md:text-5xl">{dictionary.services.title}</h2>
@@ -147,7 +147,7 @@ export default function ServicesSection({ dictionary, sectionId = "servicios" }:
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
+          viewport={{ once: true, margin: "-50px" }}
           className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-2"
         >
           {services.map((service, index) => (
@@ -155,16 +155,16 @@ export default function ServicesSection({ dictionary, sectionId = "servicios" }:
               key={index}
               variants={itemVariants}
               whileHover={{ 
-                scale: 1.03, 
-                boxShadow: "0px 20px 40px rgba(0, 0, 0, 0.1)",
+                scale: 1.02, 
+                boxShadow: "0px 15px 30px rgba(0, 0, 0, 0.08)",
               }}
-              className="p-8 bg-white rounded-xl border border-gray-100 shadow-lg hover:border-accent/20 transition-all duration-300"
-              style={{ minHeight: "280px" }} // Asegurar altura mínima para móviles
+              className="p-8 bg-white rounded-xl border border-gray-100 shadow-lg hover:border-accent/20 transition-all duration-200"
+              style={{ minHeight: "280px" }}
             >
               <div className="flex flex-col h-full">
                 <motion.div 
-                  whileHover={{ scale: 1.1, rotate: 5 }}
-                  transition={{ duration: 0.3 }}
+                  whileHover={{ scale: 1.05, rotate: 3 }}
+                  transition={{ duration: 0.2 }}
                   className="p-4 mb-6 rounded-full w-fit bg-primary/10 text-primary"
                 >
                   {service.icon}

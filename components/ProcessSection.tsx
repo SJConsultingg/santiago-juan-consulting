@@ -64,19 +64,18 @@ export default function ProcessSection({ dictionary, sectionId = "proceso" }: Pr
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.3,
+        staggerChildren: 0.15,
       },
     },
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
+    hidden: { opacity: 0, y: 10 },
     visible: {
       opacity: 1,
       y: 0,
       transition: {
-        duration: 0.6,
-        ease: "easeOut",
+        duration: 0.3,
       },
     },
   };
@@ -85,9 +84,9 @@ export default function ProcessSection({ dictionary, sectionId = "proceso" }: Pr
     <section id={sectionId} className="relative py-16 md:py-24">
       <div className="container relative px-6 md:px-8 max-w-6xl mx-auto">
         <motion.div 
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
+          transition={{ duration: 0.5 }}
           className="max-w-3xl mx-auto mb-16 text-center"
         >
           <h2 className="mb-4 md:mb-6 text-3xl md:text-4xl lg:text-5xl font-bold text-secondary">
@@ -102,7 +101,7 @@ export default function ProcessSection({ dictionary, sectionId = "proceso" }: Pr
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
+          viewport={{ once: true, margin: "-50px" }}
           className="grid gap-12 md:gap-6 md:grid-cols-3"
         >
           {steps.map((step, index) => (
@@ -110,17 +109,17 @@ export default function ProcessSection({ dictionary, sectionId = "proceso" }: Pr
               key={index}
               variants={itemVariants}
               whileHover={{ 
-                scale: 1.02,
-                boxShadow: "0 20px 40px rgba(0,0,0,0.1)",
+                scale: 1.01,
+                boxShadow: "0 15px 30px rgba(0,0,0,0.08)",
               }}
-              className="relative p-6 md:p-8 transition-all duration-300 bg-white rounded-2xl border border-gray-100 shadow-lg hover:border-accent/20 group"
+              className="relative p-6 md:p-8 transition-all duration-200 bg-white rounded-2xl border border-gray-100 shadow-lg hover:border-accent/20 group"
             >
               <div className="absolute -top-6 left-6 md:-left-6">
                 <div className="relative">
-                  <div className="w-12 h-12 bg-gradient-to-br from-accent to-primary rounded-2xl flex items-center justify-center text-white font-bold text-lg shadow-lg transform -rotate-6 group-hover:rotate-0 transition-all duration-300">
+                  <div className="w-12 h-12 bg-gradient-to-br from-accent to-primary rounded-2xl flex items-center justify-center text-white font-bold text-lg shadow-lg transform -rotate-3 group-hover:rotate-0 transition-all duration-200">
                     {step.number}
                   </div>
-                  <div className="absolute inset-0 bg-accent/20 rounded-2xl blur-xl transform scale-75 group-hover:scale-125 transition-transform duration-300"></div>
+                  <div className="absolute inset-0 bg-accent/20 rounded-2xl blur-xl transform scale-75 group-hover:scale-100 transition-transform duration-200"></div>
                 </div>
               </div>
               
