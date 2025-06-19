@@ -98,6 +98,42 @@ export default function DiagnosticAssistant({ dictionary }: { dictionary: Dictio
           : 'La respuesta de mi sistema fue incompleta. Por favor, inténtalo de nuevo.');
       }
       
+      // Procesar y limpiar la respuesta para español
+      if (!isEnglish) {
+        // Limitar la longitud de los campos para español
+        if (data.reason && data.reason.length > 150) {
+          data.reason = data.reason.substring(0, 150) + '...';
+        }
+        if (data.value && data.value.length > 100) {
+          data.value = data.value.substring(0, 100) + '...';
+        }
+        
+        // Asegurarse de que el servicio principal tenga un formato limpio
+        if (data.mainService) {
+          // Convertir a título si está en mayúsculas
+          if (data.mainService === data.mainService.toUpperCase()) {
+            data.mainService = data.mainService.charAt(0).toUpperCase() + data.mainService.slice(1).toLowerCase();
+          }
+          
+          // Limitar longitud del título del servicio
+          if (data.mainService.length > 30) {
+            data.mainService = data.mainService.substring(0, 30) + '...';
+          }
+        }
+        
+        // Limpiar el servicio complementario si existe
+        if (data.complementaryService) {
+          if (data.complementaryService === data.complementaryService.toUpperCase()) {
+            data.complementaryService = data.complementaryService.charAt(0).toUpperCase() + 
+              data.complementaryService.slice(1).toLowerCase();
+          }
+          
+          if (data.complementaryService.length > 30) {
+            data.complementaryService = data.complementaryService.substring(0, 30) + '...';
+          }
+        }
+      }
+      
       // Guardar la respuesta completa de la IA
       console.log("DiagnosticAssistant: Respuesta válida de la API:", data);
       setAiResponse(data);
@@ -426,7 +462,11 @@ export default function DiagnosticAssistant({ dictionary }: { dictionary: Dictio
               className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4 text-secondary" 
               variants={itemVariants}
             >
-              {aiResponse?.mainService || serviceContent[recommendation].title}
+              {/* Mostrar el título del servicio recomendado */}
+              {isEnglish ? 
+                (aiResponse?.mainService || serviceContent[recommendation].title) :
+                (serviceContent[recommendation].title || aiResponse?.mainService)
+              }
             </motion.h3>
             
             {/* Servicio complementario (si existe) */}
@@ -436,7 +476,7 @@ export default function DiagnosticAssistant({ dictionary }: { dictionary: Dictio
                 variants={itemVariants}
               >
                 <span className="inline-block px-3 sm:px-4 py-1.5 sm:py-2 bg-primary/20 text-primary rounded-full text-xs sm:text-sm font-medium">
-                  + {aiResponse.complementaryService}
+                  {isEnglish ? aiResponse.complementaryService : `+ ${aiResponse.complementaryService}`}
                 </span>
               </motion.div>
             )}
@@ -445,7 +485,11 @@ export default function DiagnosticAssistant({ dictionary }: { dictionary: Dictio
               className="mb-4 sm:mb-5 text-gray-600 text-base sm:text-lg leading-relaxed" 
               variants={itemVariants}
             >
-              {aiResponse?.reason || serviceContent[recommendation].description}
+              {/* Mostrar la razón de la recomendación */}
+              {isEnglish ? 
+                (aiResponse?.reason || serviceContent[recommendation].description) :
+                (aiResponse?.reason || serviceContent[recommendation].description)
+              }
             </motion.p>
             
             {/* Valor - mostrado solo si viene de la IA */}

@@ -31,11 +31,13 @@ REGLAS CRUCIALES:
 - El servicio COMPLEMENTARIO debe abordar el segundo problema más importante.
 
 IMPORTANTE: Debes proporcionar una respuesta estructurada con estos elementos:
-- SERVICIO PRINCIPAL: Nombre del servicio principal recomendado
-- SERVICIO COMPLEMENTARIO (obligatorio si detectas múltiples problemas): Un servicio adicional que complementa al principal
-- RAZÓN: Por qué estos servicios son los más adecuados (máximo 3 líneas), mencionando específicamente los problemas detectados
-- VALOR: Qué beneficios principales obtendrá el cliente (1-2 líneas)
-- ACCIÓN: Sugerir agendar una llamada gratuita de diagnóstico
+- SERVICIO PRINCIPAL: Nombre del servicio principal recomendado (MÁXIMO 5 PALABRAS)
+- SERVICIO COMPLEMENTARIO (obligatorio si detectas múltiples problemas): Un servicio adicional que complementa al principal (MÁXIMO 5 PALABRAS)
+- RAZÓN: Por qué estos servicios son los más adecuados (MÁXIMO 2 LÍNEAS), mencionando específicamente los problemas detectados
+- VALOR: Qué beneficios principales obtendrá el cliente (MÁXIMO 1 LÍNEA)
+- ACCIÓN: Sugerir agendar una llamada gratuita de diagnóstico (MÁXIMO 1 LÍNEA)
+
+EXTREMADAMENTE IMPORTANTE: Tus respuestas deben ser CONCISAS y BREVES. No uses más de 5 palabras para los nombres de servicios, 2 líneas para la razón, y 1 línea para el valor y la acción.
 
 Mantén un tono profesional pero cercano. No inventes información adicional sobre los servicios.`;
   } else {
@@ -154,11 +156,31 @@ export function extractStructuredResponse(aiResponse: string) {
   value = cleanFormatting(value);
   action = cleanFormatting(action);
   
+  // Limitar longitud para respuestas en español (detectar idioma)
+  const isSpanish = aiResponse.toLowerCase().match(/servicio|razón|valor|acción|auditoría|embudos|procesos/);
+  
+  if (isSpanish) {
+    // Limitar longitud de los campos en español
+    if (mainService.length > 30) mainService = mainService.substring(0, 30) + '...';
+    if (complementaryService.length > 30) complementaryService = complementaryService.substring(0, 30) + '...';
+    if (reason.length > 150) reason = reason.substring(0, 150) + '...';
+    if (value.length > 100) value = value.substring(0, 100) + '...';
+    if (action.length > 100) action = action.substring(0, 100) + '...';
+    
+    // Convertir a título si está en mayúsculas
+    if (mainService === mainService.toUpperCase()) {
+      mainService = mainService.charAt(0).toUpperCase() + mainService.slice(1).toLowerCase();
+    }
+    
+    if (complementaryService === complementaryService.toUpperCase()) {
+      complementaryService = complementaryService.charAt(0).toUpperCase() + 
+        complementaryService.slice(1).toLowerCase();
+    }
+  }
+  
   // Asegurarse de que tenemos al menos un servicio
   if (!mainService) {
     console.log("No se pudo extraer un servicio principal, usando valor predeterminado");
-    // Intentar detectar si la respuesta está en español o inglés
-    const isSpanish = aiResponse.toLowerCase().match(/servicio|razón|valor|acción|auditoría|embudos|procesos/);
     
     mainService = isSpanish 
       ? 'Auditoría UX/UI de sitios web'
@@ -167,7 +189,6 @@ export function extractStructuredResponse(aiResponse: string) {
   
   // Asegurarse de que tenemos una razón
   if (!reason) {
-    const isSpanish = aiResponse.toLowerCase().match(/servicio|razón|valor|acción|auditoría|embudos|procesos/);
     reason = isSpanish
       ? 'Basado en tu descripción, este servicio podría ayudarte a resolver tu problema actual.'
       : 'Based on your description, this service could help you solve your current problem.';
@@ -175,7 +196,6 @@ export function extractStructuredResponse(aiResponse: string) {
   
   // Asegurarse de que tenemos un valor
   if (!value) {
-    const isSpanish = aiResponse.toLowerCase().match(/servicio|razón|valor|acción|auditoría|embudos|procesos/);
     value = isSpanish
       ? 'Obtendrás mejoras concretas y medibles adaptadas a tus necesidades específicas.'
       : 'You will get concrete and measurable improvements tailored to your specific needs.';
@@ -183,7 +203,6 @@ export function extractStructuredResponse(aiResponse: string) {
   
   // Asegurarse de que tenemos una acción
   if (!action) {
-    const isSpanish = aiResponse.toLowerCase().match(/servicio|razón|valor|acción|auditoría|embudos|procesos/);
     action = isSpanish
       ? 'Agendemos una llamada para discutir cómo podemos ayudarte'
       : 'Let\'s schedule a call to discuss how we can help you';
