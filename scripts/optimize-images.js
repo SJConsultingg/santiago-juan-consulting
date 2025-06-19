@@ -109,38 +109,6 @@ async function processDirectory(directory) {
   }
 }
 
-async function generateFavicons() {
-  const sourceIcon = path.join(__dirname, '../public/logo_original.png');
-  const outputDir = path.join(__dirname, '../public');
-
-  // Crear los diferentes tamaños de favicon
-  const sizes = {
-    'favicon-16x16.png': 16,
-    'favicon-32x32.png': 32,
-    'favicon-192x192.png': 192,
-    'favicon-512x512.png': 512,
-    'apple-touch-icon.png': 180,
-  };
-
-  for (const [filename, size] of Object.entries(sizes)) {
-    await sharp(sourceIcon)
-      .resize(size, size)
-      .toFile(path.join(outputDir, filename));
-  }
-
-  // Generar el favicon.ico (múltiples tamaños)
-  await sharp(sourceIcon)
-    .resize(32, 32)
-    .toFile(path.join(outputDir, 'favicon.ico'));
-
-  // Generar SVG para Safari pinned tab
-  await sharp(sourceIcon)
-    .resize(512, 512)
-    .toFile(path.join(outputDir, 'safari-pinned-tab.svg'));
-
-  console.log('✅ Favicons generados correctamente');
-}
-
 async function optimizeImages() {
   const publicDir = path.join(__dirname, '../public');
   const files = await fsPromises.readdir(publicDir);
@@ -168,23 +136,14 @@ async function optimizeImages() {
  * Función principal que inicia el proceso
  */
 async function main() {
-  console.log('Iniciando optimización de imágenes...');
-  
-  for (const dir of directories) {
-    const dirPath = path.join(basePath, dir);
-    if (fs.existsSync(dirPath)) {
-      await processDirectory(dirPath);
-    }
+  try {
+    await optimizeImages();
+    console.log('✨ Proceso completado exitosamente');
+  } catch (error) {
+    console.error('❌ Error:', error);
+    process.exit(1);
   }
-  
-  await generateFavicons();
-  await optimizeImages();
-  
-  console.log('¡Optimización de imágenes completada!');
 }
 
 // Ejecutar la función principal
-main().catch(error => {
-  console.error('Error en el proceso principal:', error);
-  process.exit(1);
-}); 
+main(); 
