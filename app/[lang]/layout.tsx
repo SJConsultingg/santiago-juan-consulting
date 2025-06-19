@@ -6,6 +6,7 @@ import GoogleAnalytics from '@/components/GoogleAnalytics';
 import { getDictionary } from '@/i18n/dictionaries';
 import { DictionaryProvider } from '@/context/DictionaryProvider';
 import ClientLayout from './ClientLayout';
+import { Dictionary } from '@/types/dictionary';
 
 // Validación de idioma
 import { locales } from '@/middleware';

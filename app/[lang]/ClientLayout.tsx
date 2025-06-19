@@ -7,33 +7,7 @@ import LoadingScreen from '@/components/LoadingScreen';
 import BackgroundElements from '@/components/BackgroundElements';
 import Navbar from '@/components/Navbar';
 import SimpleLogo from '@/components/SimpleLogo';
-
-interface Dictionary {
-  [key: string]: any;
-  meta: {
-    title: string;
-    description: string;
-    keywords: string;
-  };
-  navbar: {
-    services: string;
-    process: string;
-    whyMe: string;
-    contact: string;
-    diagnosis?: string;
-  };
-  language: {
-    switchTo: string;
-  };
-  footer: {
-    founder: string;
-    quickLinks: string;
-    contact: string;
-    readyToScale: string;
-    scheduleCall: string;
-    allRightsReserved: string;
-  };
-}
+import { Dictionary } from '@/types/dictionary';
 
 interface ClientLayoutProps {
   children: React.ReactNode;

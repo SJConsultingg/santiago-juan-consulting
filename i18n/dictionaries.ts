@@ -1,10 +1,7 @@
 import 'server-only';
+import { Dictionary } from '@/types/dictionary';
 
-interface DictionaryEntry {
-  [key: string]: any;
-}
-
-const dictionaries: Record<string, () => Promise<DictionaryEntry>> = {
+const dictionaries: Record<string, () => Promise<Dictionary>> = {
   es: () => import('./locales/es.json').then((module) => module.default),
   en: () => import('./locales/en.json').then((module) => module.default)
 };
