@@ -21,22 +21,25 @@ export default function ClientLayout({ children, dictionary, lang }: ClientLayou
   const pathname = usePathname();
 
   useEffect(() => {
-    // Simular un tiempo de carga mínimo para evitar parpadeos
+    // Reducimos el tiempo de carga inicial a 500ms
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 1000);
+    }, 500);
 
     return () => clearTimeout(timer);
   }, []);
 
   useEffect(() => {
-    setIsNavigating(true);
-    const timer = setTimeout(() => {
-      setIsNavigating(false);
-    }, 500);
+    // Solo activamos la animación si no es la carga inicial
+    if (!isLoading) {
+      setIsNavigating(true);
+      const timer = setTimeout(() => {
+        setIsNavigating(false);
+      }, 300); // Reducimos también el tiempo de transición entre páginas
 
-    return () => clearTimeout(timer);
-  }, [pathname]);
+      return () => clearTimeout(timer);
+    }
+  }, [pathname, isLoading]);
 
   return (
     <div className="relative min-h-screen">
