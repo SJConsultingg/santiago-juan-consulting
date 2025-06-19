@@ -1,14 +1,13 @@
+'use client';
+
 import '../globals.css';
 import { Metadata } from 'next';
 import { Inter } from 'next/font/google';
-import BackgroundElements from '@/components/BackgroundElements';
-import Navbar from '@/components/Navbar';
 import Script from 'next/script';
 import GoogleAnalytics from '@/components/GoogleAnalytics';
 import { getDictionary } from '@/i18n/dictionaries';
 import { DictionaryProvider } from '@/context/DictionaryProvider';
-import Image from 'next/image';
-import SimpleLogo from '@/components/SimpleLogo';
+import ClientLayout from './ClientLayout';
 
 // Validación de idioma
 import { locales } from '@/middleware';
@@ -204,59 +203,14 @@ export default async function RootLayout({
           `}
         </Script>
       </head>
-      <body className={`${inter.className} bg-gradient-to-b from-white via-background to-white min-h-screen relative overflow-x-hidden`}>
+      <body className={inter.className}>
         {/* Google Analytics */}
         <GoogleAnalytics />
         
-        <div className="fixed inset-0 pointer-events-none">
-          <BackgroundElements variant="primary" />
-        </div>
         <DictionaryProvider dictionary={dictionary} lang={params.lang}>
-          <Navbar dictionary={dictionary} lang={params.lang} />
-          <main>{children}</main>
-          <footer className="py-12 text-white bg-secondary">
-            <div className="container">
-              <div className="grid grid-cols-1 gap-10 md:grid-cols-3">
-                <div>
-                  <div className="flex items-center mb-4">
-                    <SimpleLogo width={32} height={32} showText={false} textColor="text-white" variant="blanco" />
-                    <h3 className="text-xl font-bold ml-2">Santiago Juan Consulting</h3>
-                  </div>
-                  <p className="text-gray-300">{dictionary.meta.description}</p>
-                  
-                  {/* LinkedIn Personalizado */}
-                  <div className="mt-4 flex items-center">
-                    <p className="text-gray-300 mr-2">{dictionary.footer.founder}</p>
-                    <a href="https://ar.linkedin.com/in/santiago-juan-673b06211" 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="flex items-center text-white hover:text-accent transition-colors">
-                      <svg className="w-5 h-5 mr-1" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
-                      </svg>
-                      <span>Santiago Juan</span>
-                    </a>
-                  </div>
-                </div>
-                <div>
-                  <h3 className="mb-4 text-lg font-medium">{dictionary.footer.quickLinks}</h3>
-                  <ul className="space-y-2">
-                    <li><a href={`#${params.lang === 'es' ? 'servicios' : 'services'}`} className="text-gray-300 hover:text-white">{dictionary.navbar.services}</a></li>
-                    <li><a href={`#${params.lang === 'es' ? 'proceso' : 'process'}`} className="text-gray-300 hover:text-white">{dictionary.navbar.process}</a></li>
-                    <li><a href={`#${params.lang === 'es' ? 'por-qué-yo' : 'why-me'}`} className="text-gray-300 hover:text-white">{dictionary.navbar.whyMe}</a></li>
-                  </ul>
-                </div>
-                <div>
-                  <h3 className="mb-4 text-lg font-medium">{dictionary.footer.contact}</h3>
-                  <p className="text-gray-300">{dictionary.footer.readyToScale}</p>
-                  <a href={`#${params.lang === 'es' ? 'contacto' : 'contact'}`} className="inline-block mt-2 text-accent hover:underline">{dictionary.footer.scheduleCall}</a>
-                </div>
-              </div>
-              <div className="pt-8 mt-10 text-center border-t border-gray-700">
-                <p className="text-gray-400">&copy; {new Date().getFullYear()} Santiago Juan Consulting. {dictionary.footer.allRightsReserved}</p>
-              </div>
-            </div>
-          </footer>
+          <ClientLayout dictionary={dictionary} lang={params.lang}>
+            {children}
+          </ClientLayout>
         </DictionaryProvider>
       </body>
     </html>
