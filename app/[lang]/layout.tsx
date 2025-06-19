@@ -8,7 +8,7 @@ import GoogleAnalytics from '@/components/GoogleAnalytics';
 import { getDictionary } from '@/i18n/dictionaries';
 import { DictionaryProvider } from '@/context/DictionaryProvider';
 import Image from 'next/image';
-import StaticLogo from '@/components/StaticLogo';
+import SimpleLogo from '@/components/SimpleLogo';
 
 // Validación de idioma
 import { locales } from '@/middleware';
@@ -219,7 +219,7 @@ export default async function RootLayout({
               <div className="grid grid-cols-1 gap-10 md:grid-cols-3">
                 <div>
                   <div className="flex items-center mb-4">
-                    <StaticLogo width={32} height={32} showText={false} textColor="text-white" variant="blanco" />
+                    <SimpleLogo width={32} height={32} showText={false} textColor="text-white" variant="blanco" />
                     <h3 className="text-xl font-bold ml-2">Santiago Juan Consulting</h3>
                   </div>
                   <p className="text-gray-300">{dictionary.meta.description}</p>

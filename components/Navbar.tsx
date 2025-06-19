@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import LanguageSelector from './LanguageSelector';
-import SVGLogo from './SVGLogo';
+import SimpleLogo from './SimpleLogo';
 
 interface NavbarProps {
   dictionary?: {
@@ -101,7 +101,7 @@ export default function Navbar({ dictionary, lang }: NavbarProps = {}) {
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
         >
-          <SVGLogo />
+          <SimpleLogo variant="original" />
         </motion.a>
 
         {/* Menú de navegación - Desktop */}
