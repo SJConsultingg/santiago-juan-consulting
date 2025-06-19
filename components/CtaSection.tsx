@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
 
 interface CtaSectionProps {
@@ -12,94 +12,6 @@ interface CtaSectionProps {
     };
   };
   sectionId?: string;
-}
-
-type CalendlyProps = {
-  url: string;
-  prefill?: Record<string, any>;
-  utm?: Record<string, string>;
-  styles?: React.CSSProperties;
-};
-
-// Componente Calendly con lazy loading
-function Calendly({ url, styles }: CalendlyProps) {
-  const calendlyRef = useRef<HTMLDivElement>(null);
-  const [shouldLoad, setShouldLoad] = useState(false);
-
-  useEffect(() => {
-    // Usar Intersection Observer para detectar cuando el componente es visible
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setShouldLoad(true);
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.1 } // Cargar cuando al menos 10% del elemento es visible
-    );
-
-    if (calendlyRef.current) {
-      observer.observe(calendlyRef.current);
-    }
-
-    return () => {
-      observer.disconnect();
-    };
-  }, []);
-
-  useEffect(() => {
-    // Solo cargar Calendly cuando el componente sea visible
-    if (!shouldLoad) return;
-
-    // Cargar el script de Calendly
-    const head = document.querySelector('head');
-    const script = document.createElement('script');
-    script.src = 'https://assets.calendly.com/assets/external/widget.js';
-    script.async = true;
-    head?.appendChild(script);
-
-    script.onload = () => {
-      // Una vez cargado el script, inicializar Calendly
-      if (calendlyRef.current && window.Calendly) {
-        window.Calendly.initInlineWidget({
-          url: url,
-          parentElement: calendlyRef.current,
-          prefill: {},
-          utm: {}
-        });
-      }
-    };
-
-    return () => {
-      // Limpieza
-      if (head?.contains(script)) {
-        head.removeChild(script);
-      }
-    };
-  }, [url, shouldLoad]);
-
-  return (
-    <div ref={calendlyRef} style={styles}>
-      {!shouldLoad && (
-        <div 
-          className="flex items-center justify-center w-full h-full bg-gray-100 animate-pulse" 
-          style={{ height: styles?.height || '700px' }}
-        >
-          <div className="text-center">
-            <div className="w-8 h-8 mx-auto mb-4 border-t-4 border-accent rounded-full animate-spin"></div>
-            <p className="text-gray-600">Cargando calendario...</p>
-          </div>
-        </div>
-      )}
-    </div>
-  );
-}
-
-// Declaramos el tipo global para TypeScript
-declare global {
-  interface Window {
-    Calendly: any;
-  }
 }
 
 export default function CtaSection({ dictionary, sectionId }: CtaSectionProps) {
@@ -123,6 +35,20 @@ export default function CtaSection({ dictionary, sectionId }: CtaSectionProps) {
       icon: 'M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z' 
     }
   ];
+
+  // Efecto para cargar el script de Calendly
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.src = 'https://assets.calendly.com/assets/external/widget.js';
+    script.async = true;
+    
+    document.body.appendChild(script);
+    
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
 
   return (
     <section id={calculatedSectionId} className="relative py-24">
@@ -173,12 +99,14 @@ export default function CtaSection({ dictionary, sectionId }: CtaSectionProps) {
           </p>
         </motion.div>
 
-        {/* Contenedor de Calendly con fondo blanco y lazy loading */}
+        {/* Contenedor de Calendly con fondo blanco */}
         <div className="max-w-4xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden z-10 relative">
-          <Calendly 
-            url="https://calendly.com/santiagojuanconsulting/first-meeting?hide_event_type_details=1&hide_gdpr_banner=1"
-            styles={{ height: '700px', width: '100%' }} 
-          />
+          {/* Calendly inline widget */}
+          <div 
+            className="calendly-inline-widget" 
+            data-url="https://calendly.com/santiagojuanconsulting/first-meeting?hide_event_type_details=1&hide_gdpr_banner=1" 
+            style={{ minWidth: '320px', height: '700px' }}
+          ></div>
         </div>
       </div>
     </section>
