@@ -18,7 +18,7 @@ const inter = Inter({ subsets: ['latin'] });
 // Constantes globales
 const SITE_NAME = 'Santiago Juan Consulting';
 const SITE_URL = 'https://www.santiagosg.com';
-const SITE_IMAGE = `${SITE_URL}/og-image.jpg`;
+const SITE_IMAGE = `${SITE_URL}/og_image.png`;
 const TWITTER_HANDLE = '@santiagojuanconsulting';
 
 export async function generateStaticParams() {
@@ -50,7 +50,14 @@ export async function generateMetadata({ params }: { params: { lang: string } })
     },
     manifest: '/site.webmanifest',
     icons: {
-      icon: { url: '/favicon.ico', sizes: 'any' }
+      icon: [
+        { url: '/favicon.ico', sizes: 'any', type: 'image/x-icon' },
+        { url: '/web-app-manifest-192x192.png', sizes: '192x192', type: 'image/png' },
+        { url: '/web-app-manifest-512x512.png', sizes: '512x512', type: 'image/png' }
+      ],
+      apple: [
+        { url: '/web-app-manifest-192x192.png', sizes: '192x192', type: 'image/png' }
+      ]
     },
     viewport: {
       width: 'device-width',
@@ -76,7 +83,7 @@ export async function generateMetadata({ params }: { params: { lang: string } })
           url: SITE_IMAGE,
           width: 1200,
           height: 630,
-          alt: 'Santiago Juan Consulting',
+          alt: 'Santiago Juan Consulting - Consultoría en procesos y marketing para startups',
         },
       ],
     },
@@ -86,7 +93,14 @@ export async function generateMetadata({ params }: { params: { lang: string } })
       description: dictionary.meta.description,
       creator: TWITTER_HANDLE,
       site: TWITTER_HANDLE,
-      images: [SITE_IMAGE],
+      images: [
+        {
+          url: SITE_IMAGE,
+          width: 1200,
+          height: 630,
+          alt: 'Santiago Juan Consulting - Consultoría en procesos y marketing para startups',
+        }
+      ],
     },
   };
 }
@@ -189,8 +203,12 @@ export default async function RootLayout({
       <head>
         <meta name="apple-mobile-web-app-title" content="SJC" />
         <link rel="manifest" href="/site.webmanifest" />
-        <meta name="msapplication-TileColor" content="#da532c" />
-        <meta name="theme-color" content="#ffffff" />
+        <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="192x192" href="/web-app-manifest-192x192.png" />
+        <link rel="icon" type="image/png" sizes="512x512" href="/web-app-manifest-512x512.png" />
+        <link rel="apple-touch-icon" sizes="192x192" href="/web-app-manifest-192x192.png" />
+        <meta name="msapplication-TileColor" content="#00A6B2" />
+        <meta name="theme-color" content="#00A6B2" />
         
         {/* Etiquetas hreflang para SEO multilingüe */}
         <link rel="alternate" hrefLang="es" href="https://www.santiagosg.com/es" />
