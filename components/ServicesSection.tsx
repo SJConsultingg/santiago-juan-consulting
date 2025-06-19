@@ -82,18 +82,27 @@ export default function ServicesSection({ dictionary, sectionId = "servicios" }:
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.2,
+        delayChildren: 0.1,
+        staggerChildren: 0.08,
       },
     },
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 10 },
+    hidden: { 
+      opacity: 0,
+      y: 5,
+      scale: 0.98
+    },
     visible: {
       opacity: 1,
       y: 0,
+      scale: 1,
       transition: {
-        duration: 0.3,
+        type: "spring",
+        stiffness: 100,
+        damping: 15,
+        mass: 0.2,
       },
     },
   };
@@ -131,10 +140,13 @@ export default function ServicesSection({ dictionary, sectionId = "servicios" }:
     <section id={sectionId} className="relative py-24">
       <div className="container relative">
         <motion.div 
-          initial={{ opacity: 0, y: 10 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          viewport={{ once: true, margin: "-50px" }}
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ 
+            duration: 0.3,
+            ease: "easeOut"
+          }}
+          viewport={{ once: true, margin: "-20px" }}
           className="max-w-3xl mx-auto mb-20 text-center"
         >
           <h2 className="mb-6 text-4xl font-bold text-secondary md:text-5xl">{dictionary.services.title}</h2>
@@ -147,24 +159,32 @@ export default function ServicesSection({ dictionary, sectionId = "servicios" }:
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: "-50px" }}
+          viewport={{ 
+            once: true, 
+            margin: "-20px",
+            amount: 0.2
+          }}
           className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-2"
         >
           {services.map((service, index) => (
             <motion.div
               key={index}
               variants={itemVariants}
-              whileHover={{ 
-                scale: 1.02, 
-                boxShadow: "0px 15px 30px rgba(0, 0, 0, 0.08)",
+              className="p-8 bg-white rounded-xl border border-gray-100 shadow-lg hover:border-accent/20 transition-all duration-200 will-change-transform"
+              style={{ 
+                minHeight: "280px",
+                backfaceVisibility: "hidden",
+                WebkitFontSmoothing: "subpixel-antialiased",
               }}
-              className="p-8 bg-white rounded-xl border border-gray-100 shadow-lg hover:border-accent/20 transition-all duration-200"
-              style={{ minHeight: "280px" }}
             >
               <div className="flex flex-col h-full">
                 <motion.div 
                   whileHover={{ scale: 1.05, rotate: 3 }}
-                  transition={{ duration: 0.2 }}
+                  transition={{ 
+                    type: "spring",
+                    stiffness: 400,
+                    damping: 17
+                  }}
                   className="p-4 mb-6 rounded-full w-fit bg-primary/10 text-primary"
                 >
                   {service.icon}
