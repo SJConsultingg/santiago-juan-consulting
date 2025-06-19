@@ -61,6 +61,7 @@ export function middleware(request: NextRequest) {
     pathname.startsWith('/_next') ||
     pathname.startsWith('/api') ||
     pathname.includes('/static/') ||
+    pathname.includes('/images/') ||
     pathname.endsWith('.xml') ||
     pathname.endsWith('.json') ||
     pathname.endsWith('.txt') ||
@@ -70,6 +71,7 @@ export function middleware(request: NextRequest) {
     pathname.endsWith('.jpeg') ||
     pathname.endsWith('.svg') ||
     pathname.endsWith('.webp') ||
+    pathname.endsWith('.gif') ||
     pathname.endsWith('.js') ||
     pathname.endsWith('.css')
   ) {

@@ -8,7 +8,7 @@ interface StaticLogoProps {
   className?: string;
   showText?: boolean;
   textColor?: string;
-  variant?: 'acento' | 'secundario';
+  variant?: 'original' | 'acento' | 'secundario' | 'blanco' | 'negro';
 }
 
 export default function StaticLogo({ 
@@ -17,17 +17,24 @@ export default function StaticLogo({
   className = '', 
   showText = true,
   textColor = 'text-secondary',
-  variant = 'acento'
+  variant = 'original' // Por defecto usamos el logo original
 }: StaticLogoProps) {
   const [isLoaded, setIsLoaded] = useState(false);
   const [hasError, setHasError] = useState(false);
   
+  // Mapa de variantes de logo
+  const logoVariants = {
+    original: '/logo_original.png',
+    acento: '/logo_acento.png',
+    secundario: '/logo_secundario.png',
+    blanco: '/logo_blanco.png',
+    negro: '/logo_negro.png'
+  };
+  
   // Elegir el logo según la variante o usar fallback en caso de error
   const logoSrc = hasError 
-    ? '/logo_acento.png' 
-    : variant === 'acento' 
-      ? '/logo_acento.png' 
-      : '/logo_secundario.png';
+    ? logoVariants.original 
+    : logoVariants[variant];
 
   return (
     <div className={`flex items-center gap-2 md:gap-3 ${className}`}>

@@ -219,7 +219,7 @@ export default async function RootLayout({
               <div className="grid grid-cols-1 gap-10 md:grid-cols-3">
                 <div>
                   <div className="flex items-center mb-4">
-                    <StaticLogo width={32} height={32} showText={false} textColor="text-white" variant="secundario" />
+                    <StaticLogo width={32} height={32} showText={false} textColor="text-white" variant="blanco" />
                     <h3 className="text-xl font-bold ml-2">Santiago Juan Consulting</h3>
                   </div>
                   <p className="text-gray-300">{dictionary.meta.description}</p>
