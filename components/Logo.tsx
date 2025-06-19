@@ -22,28 +22,46 @@ export default function Logo({
   textColor = 'text-secondary'
 }: LogoProps) {
   const [isLoaded, setIsLoaded] = useState(false);
-  const [error, setError] = useState(false);
+  const [currentLogoIndex, setCurrentLogoIndex] = useState(0);
+  
+  // Lista de logos a intentar en orden
+  const logoOptions = [
+    '/logo.png',
+    '/logo_acento.png',
+    '/logo_blanco.png',
+    '/logo_negro.png'
+  ];
+
+  const handleError = () => {
+    // Si hay error, intentar el siguiente logo
+    if (currentLogoIndex < logoOptions.length - 1) {
+      setCurrentLogoIndex(currentLogoIndex + 1);
+    }
+    setIsLoaded(true);
+  };
 
   return (
     <div className={`flex items-center gap-2 md:gap-3 ${className}`}>
       <div className="relative">
         <div className="absolute -inset-2 bg-gradient-to-br from-primary/30 to-accent/30 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-all duration-500"></div>
+        {/* Placeholder mientras carga */}
+        {!isLoaded && (
+          <div 
+            className={`w-[${width}px] h-[${height}px] bg-gray-200 rounded-full animate-pulse absolute inset-0`} 
+            style={{ width: `${width}px`, height: `${height}px` }}
+          />
+        )}
         <Image
-          src={error ? '/Logo_blanco.png' : '/logo.png'}
+          src={logoOptions[currentLogoIndex]}
           alt="Santiago Juan Consulting"
           width={width}
           height={height}
-          className={`w-${width/4} h-${height/4} md:w-${width/4 + 1} md:h-${height/4 + 1} relative z-10 transition-all duration-500 group-hover:rotate-6 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
+          className={`relative z-10 transition-all duration-500 group-hover:rotate-6 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
           priority={priority}
           onLoad={() => setIsLoaded(true)}
-          onError={() => {
-            setError(true);
-            setIsLoaded(true);
-          }}
+          onError={handleError}
+          style={{ width: `${width}px`, height: `${height}px` }}
         />
-        {!isLoaded && (
-          <div className={`w-${width/4} h-${height/4} md:w-${width/4 + 1} md:h-${height/4 + 1} bg-gray-200 rounded-full animate-pulse`} />
-        )}
       </div>
       {showText && (
         <div className="flex flex-col">
