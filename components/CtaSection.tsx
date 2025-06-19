@@ -176,10 +176,7 @@ export default function CtaSection({ dictionary, sectionId }: CtaSectionProps) {
         {/* Contenedor de Calendly con fondo blanco y lazy loading */}
         <div className="max-w-4xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden z-10 relative">
           <Calendly 
-            url={isEnglish 
-              ? "https://calendly.com/santiagojuanconsulting/first-meeting?hide_event_type_details=1&hide_gdpr_banner=1"
-              : "https://calendly.com/santiagojuanconsulting/primera-reunion?hide_event_type_details=1&hide_gdpr_banner=1"
-            }
+            url="https://calendly.com/santiagojuanconsulting/first-meeting?hide_event_type_details=1&hide_gdpr_banner=1"
             styles={{ height: '700px', width: '100%' }} 
           />
         </div>
