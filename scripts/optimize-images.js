@@ -5,6 +5,8 @@ const path = require('path');
 const { promisify } = require('util');
 const { exec } = require('child_process');
 const execAsync = promisify(exec);
+const sharp = require('sharp');
+const fsPromises = require('fs').promises;
 
 // Directorios a revisar
 const directories = ['public', 'app'];
@@ -55,7 +57,6 @@ async function optimizeImage(filePath) {
     }
     
     // Optimizar usando sharp
-    const sharp = require('sharp');
     await sharp(filePath)
       .resize({ 
         width: 1920, 
@@ -108,6 +109,61 @@ async function processDirectory(directory) {
   }
 }
 
+async function generateFavicons() {
+  const sourceIcon = path.join(__dirname, '../public/logo_original.png');
+  const outputDir = path.join(__dirname, '../public');
+
+  // Crear los diferentes tamaños de favicon
+  const sizes = {
+    'favicon-16x16.png': 16,
+    'favicon-32x32.png': 32,
+    'favicon-192x192.png': 192,
+    'favicon-512x512.png': 512,
+    'apple-touch-icon.png': 180,
+  };
+
+  for (const [filename, size] of Object.entries(sizes)) {
+    await sharp(sourceIcon)
+      .resize(size, size)
+      .toFile(path.join(outputDir, filename));
+  }
+
+  // Generar el favicon.ico (múltiples tamaños)
+  await sharp(sourceIcon)
+    .resize(32, 32)
+    .toFile(path.join(outputDir, 'favicon.ico'));
+
+  // Generar SVG para Safari pinned tab
+  await sharp(sourceIcon)
+    .resize(512, 512)
+    .toFile(path.join(outputDir, 'safari-pinned-tab.svg'));
+
+  console.log('✅ Favicons generados correctamente');
+}
+
+async function optimizeImages() {
+  const publicDir = path.join(__dirname, '../public');
+  const files = await fsPromises.readdir(publicDir);
+
+  for (const file of files) {
+    if (file.match(/\.(jpg|jpeg|png)$/i)) {
+      const filePath = path.join(publicDir, file);
+      const stats = await fsPromises.stat(filePath);
+      
+      // Solo optimizar si el archivo es mayor a 100KB
+      if (stats.size > 100 * 1024) {
+        await sharp(filePath)
+          .resize(1920, null, { withoutEnlargement: true })
+          .jpeg({ quality: 80, progressive: true })
+          .toBuffer()
+          .then(data => fsPromises.writeFile(filePath, data));
+        
+        console.log(`✅ Imagen optimizada: ${file}`);
+      }
+    }
+  }
+}
+
 /**
  * Función principal que inicia el proceso
  */
@@ -120,6 +176,9 @@ async function main() {
       await processDirectory(dirPath);
     }
   }
+  
+  await generateFavicons();
+  await optimizeImages();
   
   console.log('¡Optimización de imágenes completada!');
 }
