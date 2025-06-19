@@ -3,6 +3,7 @@ import { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import Script from 'next/script';
 import GoogleAnalytics from '@/components/GoogleAnalytics';
+import CookieConsent from '@/components/CookieConsent';
 import { getDictionary } from '@/i18n/dictionaries';
 import { DictionaryProvider } from '@/context/DictionaryProvider';
 import ClientLayout from './ClientLayout';
@@ -228,6 +229,9 @@ export default async function RootLayout({
             {children}
           </ClientLayout>
         </DictionaryProvider>
+
+        {/* Cookie Consent Banner */}
+        <CookieConsent />
       </body>
     </html>
   );
