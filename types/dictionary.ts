@@ -1,4 +1,9 @@
 export interface Dictionary {
+  meta: {
+    title: string;
+    description: string;
+    keywords?: string;
+  };
   common: {
     language: string;
     loading: string;

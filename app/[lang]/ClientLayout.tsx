@@ -78,11 +78,11 @@ export default function ClientLayout({ children, dictionary, lang }: ClientLayou
                 </div>
               </div>
               <div>
-                <h3 className="mb-4 text-lg font-medium">{dictionary.footer.quickLinks}</h3>
+                <h3 className="mb-4 text-lg font-medium">{dictionary.footer.quick_links}</h3>
                 <ul className="space-y-2">
-                  <li><a href={`#${lang === 'es' ? 'servicios' : 'services'}`} className="text-gray-300 hover:text-white">{dictionary.navbar.services}</a></li>
-                  <li><a href={`#${lang === 'es' ? 'proceso' : 'process'}`} className="text-gray-300 hover:text-white">{dictionary.navbar.process}</a></li>
-                  <li><a href={`#${lang === 'es' ? 'por-qué-yo' : 'why-me'}`} className="text-gray-300 hover:text-white">{dictionary.navbar.whyMe}</a></li>
+                  <li><a href={`#${lang === 'es' ? 'servicios' : 'services'}`} className="text-gray-300 hover:text-white">{dictionary.nav.services}</a></li>
+                  <li><a href={`#${lang === 'es' ? 'proceso' : 'process'}`} className="text-gray-300 hover:text-white">{dictionary.nav.process}</a></li>
+                  <li><a href="#contact" className="text-gray-300 hover:text-white">{dictionary.nav.contact}</a></li>
                 </ul>
               </div>
               <div>

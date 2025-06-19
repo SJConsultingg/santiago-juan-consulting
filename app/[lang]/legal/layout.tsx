@@ -1,31 +1,18 @@
-'use client';
+import { getDictionary } from '@/i18n/dictionaries';
+import LegalLayoutClient from '@/components/LegalLayoutClient';
 
-import { motion } from 'framer-motion';
-import BackgroundElements from '@/components/BackgroundElements';
-import Navbar from '@/components/Navbar';
-
-export default function LegalLayout({
+export default async function LegalLayout({
   children,
+  params: { lang },
 }: {
   children: React.ReactNode;
+  params: { lang: string };
 }) {
+  const dictionary = await getDictionary(lang);
+
   return (
-    <div className="min-h-screen bg-gray-50/50">
-      <BackgroundElements variant="primary" />
-      <Navbar />
-      
-      <main className="pt-24 pb-16">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="container max-w-4xl mx-auto px-6 md:px-8"
-        >
-          <div className="bg-white rounded-2xl shadow-lg p-8 md:p-12">
-            {children}
-          </div>
-        </motion.div>
-      </main>
-    </div>
+    <LegalLayoutClient dictionary={dictionary} lang={lang}>
+      {children}
+    </LegalLayoutClient>
   );
 } 
