@@ -9,6 +9,7 @@ import Navbar from '@/components/Navbar';
 import SimpleLogo from '@/components/SimpleLogo';
 
 interface Dictionary {
+  [key: string]: any;
   meta: {
     title: string;
     description: string;
