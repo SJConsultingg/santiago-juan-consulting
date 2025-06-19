@@ -11,7 +11,6 @@ const withBundleAnalyzer = ANALYZE
 const nextConfig = {
   reactStrictMode: true,
   output: 'standalone',
-  swcMinify: true,
   images: {
     domains: ['assets.calendly.com'],
     formats: ['image/avif', 'image/webp'],
