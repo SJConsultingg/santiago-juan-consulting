@@ -1,0 +1,102 @@
+{
+  "navbar": {
+    "services": "Services",
+    "process": "Process",
+    "whyMe": "Why Me",
+    "contact": "Contact",
+    "diagnosis": "Diagnosis"
+  },
+  "footer": {
+    "quickLinks": "Quick Links",
+    "contact": "Contact",
+    "readyToScale": "Ready to scale your business?",
+    "scheduleCall": "Schedule free consultation",
+    "allRightsReserved": "All rights reserved",
+    "founder": "Founder:"
+  },
+  "hero": {
+    "title": "Internal process and marketing consulting for startups and ecommerce looking to scale smartly",
+    "subtitle": "Optimize your processes and conversion funnels to generate more revenue without burning your budget"
+  },
+  "services": {
+    "title": "Services",
+    "description": "Practical solutions for the real challenges founders face",
+    "service1": {
+      "title": "Internal Process Optimization",
+      "description": "Analysis and improvement of workflows to eliminate inefficiencies and reduce operational costs while scaling."
+    },
+    "service2": {
+      "title": "Marketing Automation",
+      "description": "Implementation of email, SMS and CRM strategies to nurture prospects and retain customers without additional manual effort."
+    },
+    "service3": {
+      "title": "Conversion Funnel Audit",
+      "description": "Identification of opportunities in your sales funnels to increase conversions and reduce abandonment."
+    },
+    "service4": {
+      "title": "UX/UI Web Audit",
+      "description": "Comprehensive evaluation of your website's user experience and design to maximize conversions and retention."
+    }
+  },
+  "process": {
+    "title": "How I Work",
+    "description": "A structured approach to transform problems into implementable solutions",
+    "step1": {
+      "title": "Diagnosis",
+      "description": "Comprehensive analysis of your current processes and pain points."
+    },
+    "step2": {
+      "title": "Strategy",
+      "description": "Development of a personalized action plan with clear KPIs."
+    },
+    "step3": {
+      "title": "Implementation",
+      "description": "Execution of solutions with constant support."
+    },
+    "step4": {
+      "title": "Monitoring",
+      "description": "Continuous tracking and optimization of results."
+    },
+    "uncertain": "Not sure what you need?",
+    "diagnosis_help": "The free diagnosis will help you better understand your needs and possible solutions, with no commitment.",
+    "book_diagnosis": "Book a diagnosis"
+  },
+  "whyMe": {
+    "title": "Why Work With Me",
+    "description": "My approach is direct and results-oriented, without unnecessary complications",
+    "reason1": {
+      "title": "Practical Approach",
+      "description": "Not just theoretical concepts, but solutions you can implement from day 1."
+    },
+    "reason2": {
+      "title": "Multicultural Experience",
+      "description": "I've worked with companies in Europe and Latin America, adapting to different markets."
+    },
+    "reason3": {
+      "title": "Measurable Results",
+      "description": "Focused on clear metrics and quantifiable improvements."
+    },
+    "quote": "My goal is to be the kind of consultant I wish I had when I was starting out — someone who understands real-world limitations and brings practical solutions, not just theory",
+    "founder": "Santiago Juan, founder",
+    "linkedin": "Connect on LinkedIn"
+  },
+  "cta": {
+    "title": "Ready to take your company to the next level?",
+    "description": "Schedule a free 30-minute consultation to discuss how I can help you.",
+    "button": "Schedule free consultation"
+  },
+  "meta": {
+    "title": "Santiago Juan | Process and Marketing Consulting",
+    "description": "Internal process and marketing consulting for startups and ecommerce looking to scale smartly.",
+    "keywords": "consulting, processes, marketing, startups, ecommerce, automation, Santiago Juan, process optimization, conversion funnels"
+  },
+  "language": {
+    "switchTo": "Cambiar a Español"
+  },
+  "hero_dynamic": {
+    "part1": "Is your business",
+    "part2": "growing faster",
+    "part3": "than your processes?",
+    "caption": "Turn chaos into orderly growth"
+  }
+}

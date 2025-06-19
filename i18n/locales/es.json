@@ -1,0 +1,102 @@
+{
+  "navbar": {
+    "services": "Servicios",
+    "process": "Proceso",
+    "whyMe": "Por qué yo",
+    "contact": "Contactar",
+    "diagnosis": "Diagnóstico"
+  },
+  "footer": {
+    "quickLinks": "Enlaces rápidos",
+    "contact": "Contacto",
+    "readyToScale": "¿Listo para escalar tu negocio?",
+    "scheduleCall": "Agendar consulta gratuita",
+    "allRightsReserved": "Todos los derechos reservados",
+    "founder": "Fundador:"
+  },
+  "hero": {
+    "title": "Consultoría en procesos internos y marketing para startups y ecommerce que quieren escalar con cabeza",
+    "subtitle": "Optimiza tus procesos y embudos de conversión para generar más ingresos sin quemar tu presupuesto"
+  },
+  "services": {
+    "title": "Servicios",
+    "description": "Soluciones prácticas para los desafíos reales que enfrentan los fundadores",
+    "service1": {
+      "title": "Optimización de procesos internos",
+      "description": "Análisis y mejora de flujos de trabajo para eliminar ineficiencias y reducir costes operativos mientras escalas."
+    },
+    "service2": {
+      "title": "Automatización de marketing",
+      "description": "Implementación de estrategias de email, SMS y CRM para nutrir prospectos y retener clientes sin más esfuerzo manual."
+    },
+    "service3": {
+      "title": "Auditoría de embudos de conversión",
+      "description": "Identificación de oportunidades en tus embudos de venta para aumentar conversiones y reducir abandonos."
+    },
+    "service4": {
+      "title": "Auditoría UX/UI de sitios web",
+      "description": "Evaluación exhaustiva de la experiencia de usuario y diseño de tu sitio web para maximizar conversiones y retención."
+    }
+  },
+  "process": {
+    "title": "Cómo trabajo",
+    "description": "Un enfoque estructurado para transformar problemas en soluciones implementables",
+    "step1": {
+      "title": "Diagnóstico",
+      "description": "Análisis exhaustivo de tus procesos actuales y puntos de dolor."
+    },
+    "step2": {
+      "title": "Estrategia",
+      "description": "Desarrollo de un plan de acción personalizado con KPIs claros."
+    },
+    "step3": {
+      "title": "Implementación",
+      "description": "Ejecución de las soluciones con acompañamiento constante."
+    },
+    "step4": {
+      "title": "Monitoreo",
+      "description": "Seguimiento y optimización continua de resultados."
+    },
+    "uncertain": "¿No estás seguro de lo que necesitas?",
+    "diagnosis_help": "El diagnóstico gratuito te ayudará a entender mejor tus necesidades y las posibles soluciones, sin ningún compromiso.",
+    "book_diagnosis": "Reservar diagnóstico"
+  },
+  "whyMe": {
+    "title": "Por qué trabajar conmigo",
+    "description": "Mi enfoque es directo y orientado a resultados, sin complicaciones innecesarias",
+    "reason1": {
+      "title": "Enfoque práctico",
+      "description": "No solo conceptos teóricos, sino soluciones que puedes implementar desde el día 1."
+    },
+    "reason2": {
+      "title": "Experiencia multicultural",
+      "description": "Trabajé con empresas en Europa y Latinoamérica, adaptándome a diferentes mercados."
+    },
+    "reason3": {
+      "title": "Resultados medibles",
+      "description": "Enfocado en métricas claras y mejoras cuantificables."
+    },
+    "quote": "Mi objetivo es ser el consultor que me hubiera gustado tener cuando empecé: alguien que entienda las limitaciones reales y ofrezca soluciones prácticas, no solo teoría.",
+    "founder": "Santiago Juan, fundador",
+    "linkedin": "Conéctate en LinkedIn"
+  },
+  "cta": {
+    "title": "¿Listo para llevar tu empresa al siguiente nivel?",
+    "description": "Agenda una consulta gratuita de 30 minutos para discutir cómo puedo ayudarte.",
+    "button": "Agendar consulta gratuita"
+  },
+  "meta": {
+    "title": "Santiago Juan | Consultoría de Procesos y Marketing",
+    "description": "Consultoría en procesos internos y marketing para startups y ecommerce que quieren escalar con cabeza.",
+    "keywords": "consultoría, procesos, marketing, startups, ecommerce, automatización, Santiago Juan, optimización de procesos, embudos de conversión"
+  },
+  "language": {
+    "switchTo": "Switch to English"
+  },
+  "hero_dynamic": {
+    "part1": "¿Tu negocio está",
+    "part2": "creciendo más rápido",
+    "part3": "que tus procesos?",
+    "caption": "Convierte el caos en crecimiento ordenado"
+  }
+}
