@@ -101,7 +101,7 @@ export default function Navbar({ dictionary, lang }: NavbarProps = {}) {
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
         >
-          <StaticLogo />
+          <StaticLogo variant="acento" />
         </motion.a>
 
         {/* Menú de navegación - Desktop */}
