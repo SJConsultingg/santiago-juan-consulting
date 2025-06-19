@@ -13,19 +13,19 @@ import { locales } from '@/middleware';
 
 const inter = Inter({ subsets: ['latin'] });
 
+// Constantes globales
+const SITE_NAME = 'Santiago Juan Consulting';
+const SITE_URL = 'https://www.santiagosg.com';
+const SITE_IMAGE = `${SITE_URL}/og-image.jpg`;
+const TWITTER_HANDLE = '@santiagojuanconsulting';
+
 export async function generateStaticParams() {
   return locales.map(lang => ({ lang }));
 }
 
 export async function generateMetadata({ params }: { params: { lang: string } }): Promise<Metadata> {
-  // Cargar diccionario según el idioma
   const dictionary = await getDictionary(params.lang);
   
-  // Definimos las constantes para la metadata
-  const SITE_NAME = 'Santiago Juan Consulting';
-  const SITE_URL = 'https://www.santiagosg.com';
-
-  // Titulos adaptados según el idioma
   const ogTitle = params.lang === 'es' 
     ? 'Santiago Juan Consulting | Consultoría en procesos y marketing para startups'
     : 'Santiago Juan Consulting | Process and Marketing Consulting for Startups';
@@ -40,7 +40,7 @@ export async function generateMetadata({ params }: { params: { lang: string } })
     keywords: dictionary.meta.keywords,
     metadataBase: new URL(SITE_URL),
     alternates: {
-      canonical: params.lang === 'es' ? '/es' : '/en',
+      canonical: `${SITE_URL}/${params.lang}`,
       languages: {
         'es': '/es',
         'en': '/en',
@@ -52,11 +52,23 @@ export async function generateMetadata({ params }: { params: { lang: string } })
       googleBot: {
         index: true,
         follow: true,
+        'max-video-preview': -1,
+        'max-image-preview': 'large',
+        'max-snippet': -1,
       },
     },
-    viewport: 'width=device-width, initial-scale=1.0',
+    viewport: {
+      width: 'device-width',
+      initialScale: 1,
+      maximumScale: 5,
+    },
+    verification: {
+      google: 'tu-id-de-verificacion-de-google',
+    },
     creator: 'Santiago Juan',
     publisher: SITE_NAME,
+    authors: [{ name: 'Santiago Juan' }],
+    category: 'Business Consulting',
     icons: {
       icon: [
         { url: '/favicon.ico', sizes: '16x16 32x32 48x48' },
@@ -78,7 +90,7 @@ export async function generateMetadata({ params }: { params: { lang: string } })
       type: 'website',
       images: [
         {
-          url: `${SITE_URL}/og-image.jpg`,
+          url: SITE_IMAGE,
           width: 1200,
           height: 630,
           alt: 'Santiago Juan Consulting',
@@ -89,8 +101,9 @@ export async function generateMetadata({ params }: { params: { lang: string } })
       card: 'summary_large_image',
       title: twitterTitle,
       description: dictionary.meta.description,
-      creator: '@santiagojuanconsulting',
-      images: [`${SITE_URL}/twitter-image.jpg`],
+      creator: TWITTER_HANDLE,
+      site: TWITTER_HANDLE,
+      images: [SITE_IMAGE],
     },
   };
 }
@@ -102,7 +115,6 @@ export default async function RootLayout({
   children: React.ReactNode;
   params: { lang: string };
 }) {
-  // Cargar diccionario según el idioma
   const dictionary = await getDictionary(params.lang);
   
   // Servicios traducidos según el idioma
@@ -144,6 +156,51 @@ export default async function RootLayout({
   // Nombre del catálogo de servicios según idioma
   const catalogName = params.lang === 'es' ? "Servicios de Consultoría" : "Consulting Services";
 
+  // Schema.org markup
+  const schemaOrgWebPage = {
+    '@context': 'https://schema.org',
+    '@type': 'ProfessionalService',
+    '@id': SITE_URL,
+    name: SITE_NAME,
+    description: dictionary.meta.description,
+    url: SITE_URL,
+    logo: `${SITE_URL}/logo_original.png`,
+    image: SITE_IMAGE,
+    priceRange: '$$',
+    serviceType: serviceTypes,
+    address: {
+      '@type': 'PostalAddress',
+      addressCountry: 'ES',
+    },
+    sameAs: [
+      'https://www.linkedin.com/company/santiago-juan-consulting',
+      'https://twitter.com/santiagojuanconsulting',
+    ],
+    founder: {
+      '@type': 'Person',
+      name: 'Santiago Juan',
+      jobTitle: 'Founder & Consultant',
+      sameAs: ['https://ar.linkedin.com/in/santiago-juan-673b06211'],
+    },
+    hasOfferCatalog: {
+      '@type': 'OfferCatalog',
+      name: catalogName,
+      itemListElement: serviceDetails.map((service) => ({
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: service.name,
+          description: service.description,
+        },
+      })),
+    },
+    areaServed: {
+      '@type': 'Country',
+      name: 'Spain',
+    },
+    knowsLanguage: ['es', 'en'],
+  };
+
   return (
     <html lang={params.lang}>
       <head>
@@ -157,49 +214,9 @@ export default async function RootLayout({
         <link rel="alternate" hrefLang="en" href="https://www.santiagosg.com/en" />
         <link rel="alternate" hrefLang="x-default" href="https://www.santiagosg.com/es" />
         
-        {/* Marcado de esquema (Schema.org) para datos estructurados */}
+        {/* Schema.org markup */}
         <Script id="schema-org" type="application/ld+json">
-          {`
-            {
-              "@context": "https://schema.org",
-              "@type": "ProfessionalService",
-              "name": "Santiago Juan Consulting",
-              "description": "${dictionary.meta.description}",
-              "url": "https://www.santiagosg.com",
-              "logo": "https://www.santiagosg.com/logo.png",
-              "image": "https://www.santiagosg.com/og-image.jpg",
-              "priceRange": "$$",
-              "serviceType": ${JSON.stringify(serviceTypes)},
-              "address": {
-                "@type": "PostalAddress",
-                "addressCountry": "ES"
-              },
-              "sameAs": [
-                "https://www.linkedin.com/company/santiago-juan-consulting",
-                "https://twitter.com/santiagojuanconsulting"
-              ],
-              "founder": {
-                "@type": "Person",
-                "name": "Santiago Juan"
-              },
-              "hasOfferCatalog": {
-                "@type": "OfferCatalog",
-                "name": "${catalogName}",
-                "itemListElement": [
-                  ${serviceDetails.map((service, index) => `
-                    {
-                      "@type": "Offer",
-                      "itemOffered": {
-                        "@type": "Service",
-                        "name": "${service.name}",
-                        "description": "${service.description}"
-                      }
-                    }${index < serviceDetails.length - 1 ? ',' : ''}
-                  `).join('')}
-                ]
-              }
-            }
-          `}
+          {JSON.stringify(schemaOrgWebPage)}
         </Script>
       </head>
       <body className={inter.className}>
@@ -214,4 +231,5 @@ export default async function RootLayout({
       </body>
     </html>
   );
+} 
 } 

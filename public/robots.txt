@@ -1,12 +1,15 @@
 # *
 User-agent: *
 Allow: /
-Disallow: /404
-Disallow: /500
-Disallow: /_*
 
 # Host
 Host: https://www.santiagosg.com
 
 # Sitemaps
 Sitemap: https://www.santiagosg.com/sitemap.xml
+
+# Directorios y archivos específicos
+Disallow: /api/
+Disallow: /_next/
+Disallow: /*.json$
+Disallow: /*?*

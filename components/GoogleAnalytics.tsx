@@ -2,13 +2,11 @@
 
 import Script from 'next/script';
 
-const GA_TRACKING_ID = 'G-XXXXXXXXXX'; // Reemplazar con el ID real de GA4
-
 export default function GoogleAnalytics() {
   return (
     <>
       <Script
-        src={`https://www.googletagmanager.com/gtag/js?id=${GA_TRACKING_ID}`}
+        src="https://www.googletagmanager.com/gtag/js?id=G-DYES21F88J"
         strategy="afterInteractive"
       />
       <Script id="google-analytics" strategy="afterInteractive">
@@ -16,8 +14,10 @@ export default function GoogleAnalytics() {
           window.dataLayer = window.dataLayer || [];
           function gtag(){dataLayer.push(arguments);}
           gtag('js', new Date());
-          gtag('config', '${GA_TRACKING_ID}', {
+
+          gtag('config', 'G-DYES21F88J', {
             page_path: window.location.pathname,
+            send_page_view: true
           });
         `}
       </Script>
