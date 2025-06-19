@@ -3,6 +3,7 @@ import { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import Script from 'next/script';
 import GoogleAnalytics from '@/components/GoogleAnalytics';
+import GoogleTagManager from '@/components/GoogleTagManager';
 import CookieConsent from '@/components/CookieConsent';
 import { getDictionary } from '@/i18n/dictionaries';
 import { DictionaryProvider } from '@/context/DictionaryProvider';
@@ -202,8 +203,9 @@ export default async function RootLayout({
         </Script>
       </head>
       <body className={inter.className}>
-        {/* Google Analytics */}
+        {/* Google Analytics y Google Tag Manager */}
         <GoogleAnalytics />
+        <GoogleTagManager />
         
         <DictionaryProvider dictionary={dictionary} lang={params.lang}>
           <ClientLayout dictionary={dictionary} lang={params.lang}>
