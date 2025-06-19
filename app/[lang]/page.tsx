@@ -21,7 +21,7 @@ export default function Home() {
   const sections = [
     { id: 'services', label: dictionary.nav.services },
     { id: 'process', label: dictionary.nav.process },
-    { id: 'why-me', label: dictionary.nav.whyMe },
+    { id: 'why-me', label: dictionary.nav.whyMe || 'Why Me' },
     { id: 'contact', label: dictionary.nav.contact },
   ];
 
