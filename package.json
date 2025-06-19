@@ -16,11 +16,13 @@
     "postbuild": "next-sitemap"
   },
   "dependencies": {
+    "@formatjs/intl-localematcher": "^0.6.1",
     "@heroicons/react": "^2.2.0",
     "@netlify/plugin-nextjs": "^5.11.3",
     "critters": "^0.0.23",
     "encoding": "^0.1.13",
     "framer-motion": "^10.18.0",
+    "negotiator": "^1.0.0",
     "next": "^13.5.6",
     "next-intl": "^4.1.0",
     "openai": "^4.0.0",
@@ -31,6 +33,7 @@
   },
   "devDependencies": {
     "@next/bundle-analyzer": "^13.5.6",
+    "@types/negotiator": "^0.6.4",
     "@types/node": "20.9.0",
     "@types/prop-types": "^15.7.15",
     "@types/react": "18.2.37",

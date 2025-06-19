@@ -12,7 +12,13 @@
     "readyToScale": "¿Listo para escalar tu negocio?",
     "scheduleCall": "Agendar consulta gratuita",
     "allRightsReserved": "Todos los derechos reservados",
-    "founder": "Fundador:"
+    "founder": "Fundador:",
+    "quick_links": "Enlaces Rápidos",
+    "legal": "Legal",
+    "privacy_policy": "Política de Privacidad",
+    "terms": "Términos y Condiciones",
+    "cookies": "Política de Cookies",
+    "copyright": "© {year} Santiago Juan Consulting. Todos los derechos reservados."
   },
   "hero": {
     "title": "Consultoría en procesos internos y marketing para startups y ecommerce que quieren escalar con cabeza",
@@ -98,5 +104,47 @@
     "part2": "creciendo más rápido",
     "part3": "que tus procesos?",
     "caption": "Convierte el caos en crecimiento ordenado"
+  },
+  "common": {
+    "language": "Idioma",
+    "loading": "Cargando...",
+    "error": "Error",
+    "success": "Éxito",
+    "submit": "Enviar",
+    "cancel": "Cancelar",
+    "accept": "Aceptar",
+    "reject": "Rechazar",
+    "more_info": "Más información",
+    "back": "Volver",
+    "next": "Siguiente",
+    "previous": "Anterior",
+    "close": "Cerrar"
+  },
+  "nav": {
+    "home": "Inicio",
+    "services": "Servicios",
+    "process": "Proceso",
+    "contact": "Contacto"
+  },
+  "cookies": {
+    "title": "Cookies",
+    "message": "Utilizamos cookies para mejorar tu experiencia en nuestro sitio. Al continuar navegando, aceptas nuestra Política de Cookies y Política de Privacidad.",
+    "accept": "Aceptar",
+    "reject": "Rechazar",
+    "more_info": "Más información"
+  },
+  "legal": {
+    "privacy": {
+      "title": "Política de Privacidad",
+      "last_updated": "Última actualización: {date}"
+    },
+    "terms": {
+      "title": "Términos y Condiciones",
+      "last_updated": "Última actualización: {date}"
+    },
+    "cookies": {
+      "title": "Política de Cookies",
+      "last_updated": "Última actualización: {date}"
+    }
   }
 }
