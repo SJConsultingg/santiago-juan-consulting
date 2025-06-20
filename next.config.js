@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const { ANALYZE } = process.env;
+const { PERFORMANCE_CONFIG } = require('./lib/performance-config');
 
 // Importar el analizador de bundle solo cuando es necesario
 const withBundleAnalyzer = ANALYZE
@@ -8,22 +9,26 @@ const withBundleAnalyzer = ANALYZE
     })
   : (config) => config;
 
+// Importar optimizador de PWA
+const withPWA = require('next-pwa')({
+  dest: 'public',
+  disable: process.env.NODE_ENV === 'development',
+  register: true,
+  scope: '/',
+  sw: 'service-worker.js',
+  ...PERFORMANCE_CONFIG.serviceWorker,
+});
+
 const nextConfig = {
   reactStrictMode: true,
   output: 'standalone',
-  images: {
-    domains: ['assets.calendly.com'],
-    formats: ['image/avif', 'image/webp'],
-    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048],
-    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
-    minimumCacheTTL: 60,
-    dangerouslyAllowSVG: true,
-    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
-    unoptimized: true,
-  },
+  images: PERFORMANCE_CONFIG.images,
   experimental: {
     optimizeCss: true,
-    scrollRestoration: true
+    scrollRestoration: true,
+    optimizePackageImports: ['@heroicons/react', 'framer-motion'],
+    optimizeFonts: true,
+    legacyBrowsers: false,
   },
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
@@ -32,62 +37,81 @@ const nextConfig = {
   // Optimizaciones para mejor rendimiento
   poweredByHeader: false,
   compress: true,
-  // Si el sitio se despliega en una ruta subdirectorio, configura la base path
-  // basePath: '',
   
-  // Configuración de i18n (no necesario con App Router, lo gestionamos con middleware)
-  // i18n: {
-  //   locales: ['es', 'en'],
-  //   defaultLocale: 'es',
-  // },
-  
-  // Configuración específica para analíticas y SEO
+  // Configuración de headers para caché y seguridad
   headers: async () => {
+    const securityHeaders = [
+      {
+        key: 'X-DNS-Prefetch-Control',
+        value: 'on',
+      },
+      {
+        key: 'X-Content-Type-Options',
+        value: 'nosniff',
+      },
+      {
+        key: 'X-XSS-Protection',
+        value: '1; mode=block',
+      },
+      {
+        key: 'X-Frame-Options',
+        value: 'DENY',
+      },
+      {
+        key: 'Referrer-Policy',
+        value: 'origin-when-cross-origin',
+      },
+      {
+        key: 'Permissions-Policy',
+        value: 'camera=(), microphone=(), geolocation=()',
+      },
+    ];
+
     return [
       {
         source: '/(.*)',
         headers: [
-          {
-            key: 'X-Content-Type-Options',
-            value: 'nosniff',
-          },
-          {
-            key: 'X-XSS-Protection',
-            value: '1; mode=block',
-          },
-          {
-            key: 'X-Frame-Options',
-            value: 'DENY',
-          },
-          {
-            key: 'Referrer-Policy',
-            value: 'origin-when-cross-origin',
-          },
-          {
-            key: 'Permissions-Policy',
-            value: 'camera=(), microphone=(), geolocation=()',
-          },
+          ...securityHeaders,
           {
             key: 'Cache-Control',
-            value: 'public, max-age=3600, must-revalidate',
+            value: `public, max-age=${PERFORMANCE_CONFIG.cache.staticPages.maxAge}, s-maxage=${PERFORMANCE_CONFIG.cache.staticPages.maxAge}, stale-while-revalidate=${PERFORMANCE_CONFIG.cache.staticPages.staleWhileRevalidate}`,
           },
         ],
       },
       {
-        source: '/(.*).(jpg|jpeg|png|webp|avif|ico|svg)',
+        source: '/api/(.*)',
         headers: [
+          ...securityHeaders,
           {
             key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable',
+            value: `public, max-age=${PERFORMANCE_CONFIG.cache.api.maxAge}, s-maxage=${PERFORMANCE_CONFIG.cache.api.maxAge}, stale-while-revalidate=${PERFORMANCE_CONFIG.cache.api.staleWhileRevalidate}`,
           },
         ],
       },
       {
-        source: '/(.*).(js|css)',
+        source: '/_next/static/(.*)',
         headers: [
           {
             key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable',
+            value: `public, max-age=${PERFORMANCE_CONFIG.cache.staticAssets.maxAge}, s-maxage=${PERFORMANCE_CONFIG.cache.staticAssets.maxAge}, stale-while-revalidate=${PERFORMANCE_CONFIG.cache.staticAssets.staleWhileRevalidate}`,
+          },
+        ],
+      },
+      {
+        source: '/(.*).(jpg|jpeg|png|gif|ico|svg|webp)',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: `public, max-age=${PERFORMANCE_CONFIG.cache.staticAssets.maxAge}, s-maxage=${PERFORMANCE_CONFIG.cache.staticAssets.maxAge}, stale-while-revalidate=${PERFORMANCE_CONFIG.cache.staticAssets.staleWhileRevalidate}`,
+          },
+        ],
+      },
+      {
+        source: '/(.*).(js|css|woff|woff2)',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: `public, max-age=${PERFORMANCE_CONFIG.cache.staticAssets.maxAge}, s-maxage=${PERFORMANCE_CONFIG.cache.staticAssets.maxAge}, stale-while-revalidate=${PERFORMANCE_CONFIG.cache.staticAssets.staleWhileRevalidate}`,
           },
         ],
       },
@@ -95,5 +119,5 @@ const nextConfig = {
   },
 };
 
-// Exportar la configuración con el analizador de bundle cuando está habilitado
-module.exports = withBundleAnalyzer(nextConfig); 
+// Exportar la configuración con PWA y analizador de bundle
+module.exports = withBundleAnalyzer(withPWA(nextConfig)); 

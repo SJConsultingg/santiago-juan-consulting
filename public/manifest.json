@@ -1,0 +1,48 @@
+{
+  "name": "Santiago Juan Consulting",
+  "short_name": "SJC",
+  "description": "Consultoría en procesos y marketing para startups",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#000000",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/Favicons/favicon-96x96.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/Favicons/web-app-manifest-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/Favicons/web-app-manifest-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Diagnóstico Gratuito",
+      "short_name": "Diagnóstico",
+      "description": "Obtén un diagnóstico personalizado de tu startup",
+      "url": "/diagnostico",
+      "icons": [{ "src": "/Favicons/favicon-96x96.png", "sizes": "96x96" }]
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/og_image.png",
+      "sizes": "1200x630",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Página principal de Santiago Juan Consulting"
+    }
+  ]
+} 

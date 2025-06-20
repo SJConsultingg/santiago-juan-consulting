@@ -1,102 +1,86 @@
 'use client';
 
-import { useState, useEffect, memo } from 'react';
+import { useState } from 'react';
 import Image, { ImageProps } from 'next/image';
+import { PERFORMANCE_CONFIG } from '@/lib/performance-config';
+import LazyLoad from './LazyLoad';
 
-interface OptimizedImageProps extends Omit<ImageProps, 'onError' | 'onLoad'> {
-  fallbackSrc?: string;
-  lowQualitySrc?: string;
-  className?: string;
+interface OptimizedImageProps extends Omit<ImageProps, 'onLoad' | 'loading' | 'placeholder'> {
+  lazyLoad?: boolean;
+  withBlur?: boolean;
 }
 
 // Componente de imagen optimizado con lazy loading, blur placeholder y manejo de errores
-const OptimizedImage = memo(function OptimizedImage({
+export default function OptimizedImage({
   src,
   alt,
-  fallbackSrc = '/image-placeholder.png',
-  lowQualitySrc,
+  width = 0,
+  height = 0,
   className = '',
-  loading = 'lazy',
+  lazyLoad = true,
+  withBlur = true,
+  priority = false,
   ...props
 }: OptimizedImageProps) {
-  const [imgSrc, setImgSrc] = useState(src);
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [error, setError] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const imageWidth = typeof width === 'number' ? width : parseInt(width.toString(), 10) || 0;
+  const imageHeight = typeof height === 'number' ? height : parseInt(height.toString(), 10) || 0;
 
-  // Resetear estado cuando cambia la fuente
-  useEffect(() => {
-    setImgSrc(src);
-    setIsLoaded(false);
-    setError(false);
-  }, [src]);
+  // Placeholder blur para imágenes
+  const shimmer = (w: number, h: number) => `
+    <svg width="${w}" height="${h}" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+      <defs>
+        <linearGradient id="g">
+          <stop stop-color="#f6f7f8" offset="0%" />
+          <stop stop-color="#edeef1" offset="20%" />
+          <stop stop-color="#f6f7f8" offset="40%" />
+          <stop stop-color="#f6f7f8" offset="70%" />
+        </linearGradient>
+      </defs>
+      <rect width="${w}" height="${h}" fill="#f6f7f8" />
+      <rect id="r" width="${w}" height="${h}" fill="url(#g)" />
+      <animate xlink:href="#r" attributeName="x" from="-${w}" to="${w}" dur="1s" repeatCount="indefinite" />
+    </svg>`;
 
-  // Manejar errores de carga
-  const handleError = () => {
-    setError(true);
-    if (fallbackSrc && fallbackSrc !== imgSrc) {
-      setImgSrc(fallbackSrc);
-    }
-  };
+  const toBase64 = (str: string) =>
+    typeof window === 'undefined' ? Buffer.from(str).toString('base64') : window.btoa(str);
 
-  // Manejar carga exitosa
-  const handleLoad = () => {
-    setIsLoaded(true);
-  };
+  const imageComponent = (
+    <Image
+      src={src}
+      alt={alt}
+      width={imageWidth}
+      height={imageHeight}
+      className={`transition-opacity duration-300 ${
+        isLoading ? 'opacity-0' : 'opacity-100'
+      } ${className}`}
+      onLoadingComplete={() => setIsLoading(false)}
+      priority={priority}
+      placeholder={withBlur ? `data:image/svg+xml;base64,${toBase64(shimmer(imageWidth, imageHeight))}` : 'empty'}
+      {...props}
+    />
+  );
+
+  if (!lazyLoad || priority) {
+    return imageComponent;
+  }
 
   return (
-    <div className={`relative overflow-hidden ${className}`} style={props.fill ? { width: '100%', height: '100%' } : {}}>
-      {/* Imagen de baja calidad como placeholder */}
-      {lowQualitySrc && !isLoaded && !error && (
-        <Image
-          src={lowQualitySrc}
-          alt={alt}
-          className="absolute inset-0 object-cover w-full h-full transition-opacity duration-300 blur-md"
-          {...props}
-          onLoadingComplete={handleLoad}
+    <LazyLoad
+      rootMargin={PERFORMANCE_CONFIG.lazyLoading.rootMargin}
+      threshold={PERFORMANCE_CONFIG.lazyLoading.threshold}
+      placeholder={
+        <div
+          style={{ width: imageWidth, height: imageHeight }}
+          className="animate-pulse bg-gray-200 rounded"
+          role="presentation"
         />
-      )}
-
-      {/* Imagen principal */}
-      <Image
-        src={imgSrc}
-        alt={alt}
-        className={`transition-opacity duration-500 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
-        {...props}
-        onLoadingComplete={handleLoad}
-        onError={handleError}
-      />
-
-      {/* Estado de carga */}
-      {!isLoaded && !error && !lowQualitySrc && (
-        <div className="absolute inset-0 flex items-center justify-center bg-gray-100 animate-pulse">
-          <span className="sr-only">Cargando...</span>
-        </div>
-      )}
-
-      {/* Estado de error */}
-      {error && imgSrc === fallbackSrc && (
-        <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
-          <svg
-            className="w-10 h-10 text-gray-400"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-            ></path>
-          </svg>
-        </div>
-      )}
-    </div>
+      }
+    >
+      {imageComponent}
+    </LazyLoad>
   );
-});
+}
 
 // Añadir displayName para herramientas de desarrollo
-OptimizedImage.displayName = 'OptimizedImage';
-
-export default OptimizedImage; 
+OptimizedImage.displayName = 'OptimizedImage'; 
