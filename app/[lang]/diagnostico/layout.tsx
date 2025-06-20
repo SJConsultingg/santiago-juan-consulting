@@ -16,7 +16,7 @@ export async function generateMetadata({ params }: { params: { lang: string } })
     keywords: pageSEO.keywords,
     metadataBase: new URL(SEO_CONFIG.SITE_URL),
     alternates: {
-      canonical: `${SEO_CONFIG.SITE_URL}/${locale}/diagnosis`,
+      canonical: `${SEO_CONFIG.SITE_URL}/${locale}/diagnostico`,
       languages: {
         'es': '/es/diagnostico',
         'en': '/en/diagnosis',
@@ -25,7 +25,7 @@ export async function generateMetadata({ params }: { params: { lang: string } })
     openGraph: {
       title: pageSEO.title,
       description: pageSEO.description,
-      url: `${SEO_CONFIG.SITE_URL}/${locale}/diagnosis`,
+      url: `${SEO_CONFIG.SITE_URL}/${locale}/diagnostico`,
       siteName: SEO_CONFIG.SITE_NAME,
       locale: locale === 'es' ? 'es_ES' : 'en_US',
       type: 'website',
@@ -56,7 +56,7 @@ export async function generateMetadata({ params }: { params: { lang: string } })
   };
 }
 
-export default function DiagnosisLayout({
+export default function DiagnosticoLayout({
   children,
 }: {
   children: React.ReactNode;
