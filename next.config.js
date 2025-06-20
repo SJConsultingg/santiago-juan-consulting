@@ -13,10 +13,11 @@ const withBundleAnalyzer = ANALYZE
 const withPWA = require('next-pwa')({
   dest: 'public',
   disable: process.env.NODE_ENV === 'development',
-  register: true,
-  scope: '/',
+  register: PERFORMANCE_CONFIG.serviceWorker.register,
+  scope: PERFORMANCE_CONFIG.serviceWorker.scope,
   sw: 'service-worker.js',
-  ...PERFORMANCE_CONFIG.serviceWorker,
+  exclude: PERFORMANCE_CONFIG.serviceWorker.exclude,
+  runtimeCaching: PERFORMANCE_CONFIG.serviceWorker.runtimeCaching,
 });
 
 const nextConfig = {
