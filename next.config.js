@@ -27,8 +27,6 @@ const nextConfig = {
     optimizeCss: true,
     scrollRestoration: true,
     optimizePackageImports: ['@heroicons/react', 'framer-motion'],
-    optimizeFonts: true,
-    legacyBrowsers: false,
   },
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
