@@ -32,12 +32,15 @@ export default function AnimationWrapper({
   });
   const prefersReducedMotion = useReducedMotion();
   const [isMounted, setIsMounted] = useState(false);
+  const [isClient, setIsClient] = useState(false);
   
   // Detectar si estamos en un dispositivo móvil
   const [isMobile, setIsMobile] = useState(false);
   
   useEffect(() => {
     setIsMounted(true);
+    setIsClient(true);
+    
     // Detectar si es un dispositivo móvil basado en el ancho de pantalla
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
@@ -52,7 +55,7 @@ export default function AnimationWrapper({
   }, []);
   
   // Si no estamos en el cliente o el usuario prefiere movimiento reducido, renderizar sin animación
-  if (!isMounted || prefersReducedMotion) {
+  if (!isClient || prefersReducedMotion) {
     return <div className={className}>{children}</div>;
   }
   
@@ -90,13 +93,16 @@ export default function AnimationWrapper({
     perspective: 1000,
   };
   
+  // Asegurarse de que el contenido sea visible incluso si hay problemas con la detección
+  const initialState = isMounted ? "hidden" : "visible";
+  
   return (
     <motion.div
       ref={ref}
       className={className}
       style={style}
-      initial="hidden"
-      animate={isInView ? "visible" : "hidden"}
+      initial={initialState}
+      animate={isInView || !isMounted ? "visible" : "hidden"}
       variants={variants}
       viewport={{ once, margin: rootMargin, amount: threshold }}
     >

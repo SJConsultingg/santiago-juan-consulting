@@ -2,6 +2,8 @@
 
 import { motion } from 'framer-motion';
 import AnimationWrapper from './AnimationWrapper';
+import FallbackWrapper from './FallbackWrapper';
+import { useState, useEffect } from 'react';
 
 interface ServicesSectionProps {
   dictionary: {
@@ -30,6 +32,31 @@ interface ServicesSectionProps {
 }
 
 export default function ServicesSection({ dictionary, sectionId = "servicios" }: ServicesSectionProps) {
+  // Estado para controlar si usamos las animaciones o el fallback
+  const [useAnimations, setUseAnimations] = useState(true);
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+    
+    // Intentar detectar problemas con las animaciones
+    const checkAnimationSupport = () => {
+      try {
+        // Si estamos en un entorno que podría tener problemas, usar fallback
+        const isLowPowerDevice = 
+          window.navigator.userAgent.includes('Mobile') && 
+          navigator.hardwareConcurrency <= 4;
+          
+        setUseAnimations(!isLowPowerDevice);
+      } catch (error) {
+        // Si hay algún error, mejor usar el fallback
+        setUseAnimations(false);
+      }
+    };
+    
+    checkAnimationSupport();
+  }, []);
+
   // Configuración de animaciones
   const containerVariants = {
     hidden: {},
@@ -92,10 +119,18 @@ export default function ServicesSection({ dictionary, sectionId = "servicios" }:
     },
   ];
 
+  // Si no estamos en el cliente todavía, mostrar un div vacío para evitar errores de hidratación
+  if (!isClient) {
+    return <div id={sectionId} className="relative py-24"></div>;
+  }
+
+  // Elegir el componente wrapper basado en si usamos animaciones o no
+  const Wrapper = useAnimations ? AnimationWrapper : FallbackWrapper;
+
   return (
     <section id={sectionId} className="relative py-24">
       <div className="container relative">
-        <AnimationWrapper
+        <Wrapper
           animation="fade"
           className="max-w-3xl mx-auto mb-20 text-center"
         >
@@ -103,11 +138,11 @@ export default function ServicesSection({ dictionary, sectionId = "servicios" }:
           <p className="text-xl text-gray-600">
             {dictionary.services.description}
           </p>
-        </AnimationWrapper>
+        </Wrapper>
 
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-2">
           {services.map((service, index) => (
-            <AnimationWrapper
+            <Wrapper
               key={index}
               animation="slide-up"
               delay={index * 0.1}
@@ -128,12 +163,12 @@ export default function ServicesSection({ dictionary, sectionId = "servicios" }:
                 <h3 className="mb-4 text-2xl font-bold text-secondary">{service.title}</h3>
                 <p className="text-gray-600/90 leading-relaxed">{service.description}</p>
               </div>
-            </AnimationWrapper>
+            </Wrapper>
           ))}
         </div>
         
         {/* Indicador sutil de scroll para indicar que hay más contenido */}
-        <AnimationWrapper
+        <Wrapper
           animation="fade"
           delay={0.8}
           className="flex justify-center mt-12"
@@ -160,7 +195,7 @@ export default function ServicesSection({ dictionary, sectionId = "servicios" }:
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
             </svg>
           </motion.div>
-        </AnimationWrapper>
+        </Wrapper>
       </div>
     </section>
   );

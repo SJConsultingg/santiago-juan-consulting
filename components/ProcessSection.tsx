@@ -2,6 +2,8 @@
 
 import { motion } from 'framer-motion';
 import AnimationWrapper from './AnimationWrapper';
+import FallbackWrapper from './FallbackWrapper';
+import { useState, useEffect } from 'react';
 
 interface ProcessSectionProps {
   dictionary: {
@@ -33,6 +35,31 @@ interface ProcessSectionProps {
 }
 
 export default function ProcessSection({ dictionary, sectionId = "proceso" }: ProcessSectionProps) {
+  // Estado para controlar si usamos las animaciones o el fallback
+  const [useAnimations, setUseAnimations] = useState(true);
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+    
+    // Intentar detectar problemas con las animaciones
+    const checkAnimationSupport = () => {
+      try {
+        // Si estamos en un entorno que podría tener problemas, usar fallback
+        const isLowPowerDevice = 
+          window.navigator.userAgent.includes('Mobile') && 
+          navigator.hardwareConcurrency <= 4;
+          
+        setUseAnimations(!isLowPowerDevice);
+      } catch (error) {
+        // Si hay algún error, mejor usar el fallback
+        setUseAnimations(false);
+      }
+    };
+    
+    checkAnimationSupport();
+  }, []);
+
   // Determinar si estamos en inglés o español
   const isEnglish = dictionary.process.title === "How I Work";
   
@@ -60,6 +87,7 @@ export default function ProcessSection({ dictionary, sectionId = "proceso" }: Pr
     }
   ];
 
+  // Configuración de animaciones
   const containerVariants = {
     hidden: {},
     visible: {
@@ -81,10 +109,18 @@ export default function ProcessSection({ dictionary, sectionId = "proceso" }: Pr
     }
   };
 
+  // Si no estamos en el cliente todavía, mostrar un div vacío para evitar errores de hidratación
+  if (!isClient) {
+    return <div id={sectionId} className="relative py-16 md:py-24"></div>;
+  }
+
+  // Elegir el componente wrapper basado en si usamos animaciones o no
+  const Wrapper = useAnimations ? AnimationWrapper : FallbackWrapper;
+
   return (
     <section id={sectionId} className="relative py-16 md:py-24">
       <div className="container relative px-6 md:px-8 max-w-6xl mx-auto">
-        <AnimationWrapper
+        <Wrapper
           animation="fade"
           className="max-w-3xl mx-auto mb-16 text-center"
         >
@@ -94,11 +130,11 @@ export default function ProcessSection({ dictionary, sectionId = "proceso" }: Pr
           <p className="text-lg md:text-xl text-gray-600 px-4">
             {dictionary.process.description}
           </p>
-        </AnimationWrapper>
+        </Wrapper>
 
         <div className="grid gap-12 md:gap-6 md:grid-cols-3">
           {steps.map((step, index) => (
-            <AnimationWrapper
+            <Wrapper
               key={index}
               animation="slide-up"
               delay={index * 0.15}
@@ -136,11 +172,11 @@ export default function ProcessSection({ dictionary, sectionId = "proceso" }: Pr
                   <p className="text-gray-600/90 leading-relaxed">{step.description}</p>
                 </div>
               </div>
-            </AnimationWrapper>
+            </Wrapper>
           ))}
         </div>
 
-        <AnimationWrapper
+        <Wrapper
           animation="fade"
           delay={0.4}
           duration={0.8}
@@ -184,7 +220,7 @@ export default function ProcessSection({ dictionary, sectionId = "proceso" }: Pr
               </svg>
             </motion.a>
           </motion.div>
-        </AnimationWrapper>
+        </Wrapper>
       </div>
     </section>
   );
