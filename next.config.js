@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const { ANALYZE } = process.env;
-const { PERFORMANCE_CONFIG } = require('./lib/performance-config');
+const PERFORMANCE_CONFIG = require('./lib/performance-config.js');
 
 // Importar el analizador de bundle solo cuando es necesario
 const withBundleAnalyzer = ANALYZE
