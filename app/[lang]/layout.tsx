@@ -48,15 +48,15 @@ export async function generateMetadata({ params }: { params: { lang: string } })
         'en': '/en',
       },
     },
-    manifest: '/site.webmanifest',
+    manifest: '/Favicons/site.webmanifest',
     icons: {
       icon: [
-        { url: '/favicon.ico', sizes: 'any', type: 'image/x-icon' },
-        { url: '/web-app-manifest-192x192.png', sizes: '192x192', type: 'image/png' },
-        { url: '/web-app-manifest-512x512.png', sizes: '512x512', type: 'image/png' }
+        { url: '/Favicons/favicon.ico', sizes: 'any', type: 'image/x-icon' },
+        { url: '/Favicons/favicon-96x96.png', sizes: '96x96', type: 'image/png' },
+        { url: '/Favicons/favicon.svg', type: 'image/svg+xml' }
       ],
       apple: [
-        { url: '/web-app-manifest-192x192.png', sizes: '192x192', type: 'image/png' }
+        { url: '/Favicons/apple-touch-icon.png', sizes: '180x180', type: 'image/png' }
       ]
     },
     viewport: {
@@ -202,11 +202,11 @@ export default async function RootLayout({
     <html lang={params.lang}>
       <head>
         <meta name="apple-mobile-web-app-title" content="SJC" />
-        <link rel="manifest" href="/site.webmanifest" />
-        <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-        <link rel="icon" type="image/png" sizes="192x192" href="/web-app-manifest-192x192.png" />
-        <link rel="icon" type="image/png" sizes="512x512" href="/web-app-manifest-512x512.png" />
-        <link rel="apple-touch-icon" sizes="192x192" href="/web-app-manifest-192x192.png" />
+        <link rel="manifest" href="/Favicons/site.webmanifest" />
+        <link rel="icon" type="image/png" href="/Favicons/favicon-96x96.png" sizes="96x96" />
+        <link rel="icon" type="image/svg+xml" href="/Favicons/favicon.svg" />
+        <link rel="shortcut icon" href="/Favicons/favicon.ico" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/Favicons/apple-touch-icon.png" />
         <meta name="msapplication-TileColor" content="#00A6B2" />
         <meta name="theme-color" content="#00A6B2" />
         

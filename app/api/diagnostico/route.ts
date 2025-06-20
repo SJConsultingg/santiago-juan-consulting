@@ -5,12 +5,12 @@ import { getFallbackResponse } from '@/lib/fallback-responses';
 import { getOpenAIConfig, extractStructuredResponse } from '@/lib/openai-prompts';
 import { detectLanguage } from '@/lib/language-detection';
 
-// Inicializar OpenAI solo si existe la API key
-const openai = process.env.OPENAI_API_KEY 
-  ? new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
-  : null;
+// Inicializar OpenAI con la API key desde variables de entorno
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY,
+});
 
-console.log("API diagnostico: Inicializando servicio");
+console.log("API diagnostico: Inicializando con API key desde variables de entorno");
 
 /**
  * Endpoint POST para analizar el problema del usuario con OpenAI
@@ -19,15 +19,6 @@ console.log("API diagnostico: Inicializando servicio");
 export async function POST(request: Request) {
   console.log("API diagnostico: Recibida nueva solicitud POST");
   try {
-    // Si no hay API key configurada, devolver respuesta de fallback
-    if (!openai) {
-      console.log("API diagnostico: No hay API key configurada, usando respuesta de fallback");
-      return NextResponse.json({ 
-        error: 'Servicio no disponible temporalmente',
-        fallbackResponse: getFallbackResponse('es') 
-      }, { status: 503 });
-    }
-
     // Verificar límites de uso
     const limiter = await rateLimit.check();
     console.log("API diagnostico: Verificación de límites:", limiter);

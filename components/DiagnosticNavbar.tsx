@@ -5,10 +5,20 @@ import { motion } from 'framer-motion';
 import Image from 'next/image';
 import LanguageSelector from './LanguageSelector';
 import SimpleLogo from './SimpleLogo';
-import type { Dictionary } from '@/types/dictionary';
 
 interface NavbarProps {
-  dictionary?: Dictionary;
+  dictionary?: {
+    navbar?: {
+      services: string;
+      process: string;
+      whyMe: string;
+      contact: string;
+      diagnosis?: string;
+    };
+    language?: {
+      switchTo: string;
+    };
+  };
   lang?: string;
 }
 
@@ -16,61 +26,8 @@ export default function DiagnosticNavbar({ dictionary, lang }: NavbarProps = {})
   const [scrolled, setScrolled] = useState(false);
 
   // Valores por defecto en español si no hay diccionario
-  const defaultDictionary: Dictionary = {
-    meta: {
-      title: '',
-      description: '',
-    },
-    common: {
-      language: '',
-      loading: '',
-      error: '',
-      success: '',
-      submit: '',
-      cancel: '',
-      accept: '',
-      reject: '',
-      more_info: '',
-      back: '',
-      next: '',
-      previous: '',
-      close: '',
-    },
-    nav: {
-      home: '',
-      services: '',
-      process: '',
-      contact: '',
-    },
-    footer: {
-      quick_links: '',
-      legal: '',
-      privacy_policy: '',
-      terms: '',
-      cookies: '',
-      copyright: '',
-    },
-    cookies: {
-      title: '',
-      message: '',
-      accept: '',
-      reject: '',
-      more_info: '',
-    },
-    legal: {
-      privacy: {
-        title: '',
-        last_updated: '',
-      },
-      terms: {
-        title: '',
-        last_updated: '',
-      },
-      cookies: {
-        title: '',
-        last_updated: '',
-      },
-    },
+  const defaultLabels = {
+    switchTo: 'Switch to English'
   };
 
   // Crear URL base para redirecciones a la página principal
@@ -115,7 +72,11 @@ export default function DiagnosticNavbar({ dictionary, lang }: NavbarProps = {})
         {showLanguageSelector && lang && (
           <div className="mx-2">
             <LanguageSelector 
-              dictionary={dictionary || defaultDictionary}
+              dictionary={{ 
+                language: { 
+                  switchTo: dictionary?.language?.switchTo || defaultLabels.switchTo 
+                } 
+              }}
               lang={lang}
             />
           </div>

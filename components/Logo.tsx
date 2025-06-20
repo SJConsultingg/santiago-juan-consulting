@@ -11,7 +11,6 @@ interface LogoProps {
   priority?: boolean;
   showText?: boolean;
   textColor?: string;
-  variant?: 'light' | 'dark';
 }
 
 export default function Logo({ 
@@ -20,8 +19,7 @@ export default function Logo({
   className = '', 
   priority = false,
   showText = true,
-  textColor = 'text-secondary',
-  variant = 'light'
+  textColor = 'text-secondary'
 }: LogoProps) {
   const [isLoaded, setIsLoaded] = useState(false);
   const [currentLogoIndex, setCurrentLogoIndex] = useState(0);

@@ -1,18 +1,17 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { motion, MotionValue } from 'framer-motion';
+import { motion } from 'framer-motion';
 
 interface ScrollIndicatorProps {
-  scaleX: MotionValue<number>;
-  sections?: {
+  sections: {
     id: string;
     label: string;
   }[];
-  lang?: string;
+  lang: string;
 }
 
-export default function ScrollIndicator({ scaleX, sections = [], lang = 'es' }: ScrollIndicatorProps) {
+export default function ScrollIndicator({ sections, lang }: ScrollIndicatorProps) {
   const [activeSection, setActiveSection] = useState('');
   const [scrollProgress, setScrollProgress] = useState(0);
 

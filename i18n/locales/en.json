@@ -1,58 +1,18 @@
 {
-  "common": {
-    "language": "Language",
-    "loading": "Loading...",
-    "error": "Error",
-    "success": "Success",
-    "submit": "Submit",
-    "cancel": "Cancel",
-    "accept": "Accept",
-    "reject": "Reject",
-    "more_info": "More info",
-    "back": "Back",
-    "next": "Next",
-    "previous": "Previous",
-    "close": "Close"
-  },
-  "nav": {
-    "home": "Home",
+  "navbar": {
     "services": "Services",
     "process": "Process",
-    "contact": "Contact"
+    "whyMe": "Why Me",
+    "contact": "Contact",
+    "diagnosis": "Diagnosis"
   },
   "footer": {
-    "quick_links": "Quick Links",
-    "legal": "Legal",
-    "privacy_policy": "Privacy Policy",
-    "terms": "Terms & Conditions",
-    "cookies": "Cookie Policy",
-    "copyright": "© {year} Santiago Juan Consulting. All rights reserved.",
+    "quickLinks": "Quick Links",
     "contact": "Contact",
     "readyToScale": "Ready to scale your business?",
     "scheduleCall": "Schedule free consultation",
     "allRightsReserved": "All rights reserved",
     "founder": "Founder:"
-  },
-  "cookies": {
-    "title": "Cookies",
-    "message": "We use cookies to enhance your experience on our site. By continuing to browse, you accept our Cookie Policy and Privacy Policy.",
-    "accept": "Accept",
-    "reject": "Reject",
-    "more_info": "More info"
-  },
-  "legal": {
-    "privacy": {
-      "title": "Privacy Policy",
-      "last_updated": "Last updated: {date}"
-    },
-    "terms": {
-      "title": "Terms & Conditions",
-      "last_updated": "Last updated: {date}"
-    },
-    "cookies": {
-      "title": "Cookie Policy",
-      "last_updated": "Last updated: {date}"
-    }
   },
   "hero": {
     "title": "Internal process and marketing consulting for startups and ecommerce looking to scale smartly",
