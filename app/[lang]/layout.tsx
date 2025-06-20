@@ -17,8 +17,8 @@ const inter = Inter({ subsets: ['latin'] });
 
 // Constantes globales
 const SITE_NAME = 'Santiago Juan Consulting';
-const SITE_URL = 'https://www.santiagosg.com';
-const SITE_IMAGE = `${SITE_URL}/og_image.png`;
+const SITE_URL = 'https://santiagojuanconsulting.com';
+const SITE_IMAGE = 'https://opengraph.b-cdn.net/production/images/3e8f7ca7-c220-4d6b-a9af-65a48be2fe4c.png?token=xoXXhOSpCgm40eEiPa7Ify2MHrw7LGGVnWlpck-LpfQ&height=630&width=1200&expires=33286429856';
 const TWITTER_HANDLE = '@santiagojuanconsulting';
 
 export async function generateStaticParams() {
@@ -28,21 +28,16 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: { params: { lang: string } }): Promise<Metadata> {
   const dictionary = await getDictionary(params.lang);
   
-  const ogTitle = params.lang === 'es' 
-    ? 'Santiago Juan Consulting | Consultoría en procesos y marketing para startups'
-    : 'Santiago Juan Consulting | Process and Marketing Consulting for Startups';
-    
-  const twitterTitle = params.lang === 'es'
-    ? 'Santiago Juan Consulting | Consultoría para startups'
-    : 'Santiago Juan Consulting | Consulting for startups';
+  const title = 'Santiago Juan Consulting | Consultoría en procesos y marketing para startups';
+  const description = 'Consultoría en procesos internos y marketing para startups y ecommerce que quieren escalar con cabeza.';
 
   return {
-    title: dictionary.meta.title,
-    description: dictionary.meta.description,
+    title,
+    description,
     keywords: dictionary.meta.keywords,
     metadataBase: new URL(SITE_URL),
     alternates: {
-      canonical: `${SITE_URL}/${params.lang}`,
+      canonical: SITE_URL,
       languages: {
         'es': '/es',
         'en': '/en',
@@ -67,13 +62,9 @@ export async function generateMetadata({ params }: { params: { lang: string } })
     verification: {
       google: 'tu-id-de-verificacion-de-google',
     },
-    creator: 'Santiago Juan',
-    publisher: SITE_NAME,
-    authors: [{ name: 'Santiago Juan' }],
-    category: 'Business Consulting',
     openGraph: {
-      title: ogTitle,
-      description: dictionary.meta.description,
+      title,
+      description,
       url: SITE_URL,
       siteName: SITE_NAME,
       locale: params.lang === 'es' ? 'es_ES' : 'en_US',
@@ -89,8 +80,8 @@ export async function generateMetadata({ params }: { params: { lang: string } })
     },
     twitter: {
       card: 'summary_large_image',
-      title: twitterTitle,
-      description: dictionary.meta.description,
+      title,
+      description,
       creator: TWITTER_HANDLE,
       site: TWITTER_HANDLE,
       images: [
@@ -201,6 +192,25 @@ export default async function RootLayout({
   return (
     <html lang={params.lang}>
       <head>
+        {/* HTML Meta Tags */}
+        <meta name="description" content="Consultoría en procesos internos y marketing para startups y ecommerce que quieren escalar con cabeza." />
+        
+        {/* Facebook Meta Tags */}
+        <meta property="og:url" content="https://santiagojuanconsulting.com" />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="Santiago Juan Consulting | Consultoría en procesos y marketing para startups" />
+        <meta property="og:description" content="Consultoría en procesos internos y marketing para startups y ecommerce que quieren escalar con cabeza." />
+        <meta property="og:image" content="https://opengraph.b-cdn.net/production/images/3e8f7ca7-c220-4d6b-a9af-65a48be2fe4c.png?token=xoXXhOSpCgm40eEiPa7Ify2MHrw7LGGVnWlpck-LpfQ&height=630&width=1200&expires=33286429856" />
+
+        {/* Twitter Meta Tags */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta property="twitter:domain" content="santiagojuanconsulting.com" />
+        <meta property="twitter:url" content="https://santiagojuanconsulting.com" />
+        <meta name="twitter:title" content="Santiago Juan Consulting | Consultoría en procesos y marketing para startups" />
+        <meta name="twitter:description" content="Consultoría en procesos internos y marketing para startups y ecommerce que quieren escalar con cabeza." />
+        <meta name="twitter:image" content="https://opengraph.b-cdn.net/production/images/3e8f7ca7-c220-4d6b-a9af-65a48be2fe4c.png?token=xoXXhOSpCgm40eEiPa7Ify2MHrw7LGGVnWlpck-LpfQ&height=630&width=1200&expires=33286429856" />
+
+        {/* Favicon Tags */}
         <meta name="apple-mobile-web-app-title" content="SJC" />
         <link rel="manifest" href="/Favicons/site.webmanifest" />
         <link rel="icon" type="image/png" href="/Favicons/favicon-96x96.png" sizes="96x96" />
@@ -211,9 +221,9 @@ export default async function RootLayout({
         <meta name="theme-color" content="#00A6B2" />
         
         {/* Etiquetas hreflang para SEO multilingüe */}
-        <link rel="alternate" hrefLang="es" href="https://www.santiagosg.com/es" />
-        <link rel="alternate" hrefLang="en" href="https://www.santiagosg.com/en" />
-        <link rel="alternate" hrefLang="x-default" href="https://www.santiagosg.com/es" />
+        <link rel="alternate" hrefLang="es" href="https://santiagojuanconsulting.com/es" />
+        <link rel="alternate" hrefLang="en" href="https://santiagojuanconsulting.com/en" />
+        <link rel="alternate" hrefLang="x-default" href="https://santiagojuanconsulting.com/es" />
         
         {/* Schema.org markup */}
         <Script id="schema-org" type="application/ld+json">
