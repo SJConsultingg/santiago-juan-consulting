@@ -1,9 +1,6 @@
 'use client';
 
-import { motion } from 'framer-motion';
-import AnimationWrapper from './AnimationWrapper';
-import FallbackWrapper from './FallbackWrapper';
-import { useState, useEffect } from 'react';
+import React from 'react';
 
 interface ProcessSectionProps {
   dictionary: {
@@ -22,10 +19,6 @@ interface ProcessSectionProps {
         title: string;
         description: string;
       };
-      step4: {
-        title: string;
-        description: string;
-      };
     };
     cta: {
       button: string;
@@ -35,109 +28,56 @@ interface ProcessSectionProps {
 }
 
 export default function ProcessSection({ dictionary, sectionId = "proceso" }: ProcessSectionProps) {
-  // Estado para controlar si usamos las animaciones o el fallback
-  const [useAnimations, setUseAnimations] = useState(true);
-  const [isClient, setIsClient] = useState(false);
-
-  useEffect(() => {
-    setIsClient(true);
-    
-    // Intentar detectar problemas con las animaciones
-    const checkAnimationSupport = () => {
-      try {
-        // Si estamos en un entorno que podría tener problemas, usar fallback
-        const isLowPowerDevice = 
-          window.navigator.userAgent.includes('Mobile') && 
-          navigator.hardwareConcurrency <= 4;
-          
-        setUseAnimations(!isLowPowerDevice);
-      } catch (error) {
-        // Si hay algún error, mejor usar el fallback
-        setUseAnimations(false);
-      }
-    };
-    
-    checkAnimationSupport();
-  }, []);
-
-  // Determinar si estamos en inglés o español
+  // Determinar si estamos en inglés o español basado en el contenido
   const isEnglish = dictionary.process.title === "How I Work";
   
+  // Pasos del proceso con iconos
   const steps = [
     {
-      number: '01',
       title: dictionary.process.step1.title,
-      description: isEnglish 
-        ? "I analyze together with you the main weaknesses of your business and identify immediate improvement opportunities. No commitment."
-        : "Analizo junto contigo los principales puntos débiles de tu negocio y detecto oportunidades de mejora inmediatas. Sin compromiso."
+      description: dictionary.process.step1.description,
+      icon: (
+        <svg xmlns="http://www.w3.org/2000/svg" className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+      ),
     },
     {
-      number: '02',
       title: dictionary.process.step2.title,
-      description: isEnglish
-        ? "I develop a specific plan with measurable objectives, realistic timeline, and clear priorities. You'll know exactly what we'll do and why."
-        : "Elaboro un plan específico con objetivos medibles, calendario realista y prioridades claras. Sabrás exactamente qué haremos y por qué."
+      description: dictionary.process.step2.description,
+      icon: (
+        <svg xmlns="http://www.w3.org/2000/svg" className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+        </svg>
+      ),
     },
     {
-      number: '03',
       title: dictionary.process.step3.title,
-      description: isEnglish
-        ? "If you want, I can support you in implementing the solutions, either with advisory sessions or by getting directly involved in the project."
-        : "Si quieres, puedo acompañarte en la implementación de las soluciones, ya sea con sesiones de asesoría o implicándome directamente en el proyecto."
-    }
+      description: dictionary.process.step3.description,
+      icon: (
+        <svg xmlns="http://www.w3.org/2000/svg" className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+        </svg>
+      ),
+    },
   ];
-
-  // Configuración de animaciones
-  const containerVariants = {
-    hidden: {},
-    visible: {
-      transition: {
-        staggerChildren: 0.15
-      }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { 
-      opacity: 1, 
-      y: 0,
-      transition: { 
-        duration: 0.6,
-        ease: "easeOut"
-      } 
-    }
-  };
-
-  // Si no estamos en el cliente todavía, mostrar un div vacío para evitar errores de hidratación
-  if (!isClient) {
-    return <div id={sectionId} className="relative py-16 md:py-24"></div>;
-  }
-
-  // Elegir el componente wrapper basado en si usamos animaciones o no
-  const Wrapper = useAnimations ? AnimationWrapper : FallbackWrapper;
 
   return (
     <section id={sectionId} className="relative py-16 md:py-24">
       <div className="container relative px-6 md:px-8 max-w-6xl mx-auto">
-        <Wrapper
-          animation="fade"
-          className="max-w-3xl mx-auto mb-16 text-center"
-        >
+        <div className="max-w-3xl mx-auto mb-16 text-center">
           <h2 className="mb-4 md:mb-6 text-3xl md:text-4xl lg:text-5xl font-bold text-secondary">
             {dictionary.process.title}
           </h2>
           <p className="text-lg md:text-xl text-gray-600 px-4">
             {dictionary.process.description}
           </p>
-        </Wrapper>
+        </div>
 
         <div className="grid gap-12 md:gap-6 md:grid-cols-3">
           {steps.map((step, index) => (
-            <Wrapper
+            <div
               key={index}
-              animation="slide-up"
-              delay={index * 0.15}
               className="relative"
             >
               {/* Línea conectora entre pasos (solo en desktop) */}
@@ -150,19 +90,9 @@ export default function ProcessSection({ dictionary, sectionId = "proceso" }: Pr
               <div className="bg-white rounded-xl border border-gray-100 shadow-lg p-8 relative z-10 h-full hover:border-accent/20 transition-all duration-200">
                 <div className="flex flex-col h-full">
                   <div className="flex items-center mb-6">
-                    <motion.div 
-                      whileHover={{ scale: 1.05, rotate: 5 }}
-                      transition={{ 
-                        type: "spring",
-                        stiffness: 400,
-                        damping: 17
-                      }}
-                      className="flex-shrink-0 w-16 h-16 rounded-full bg-accent/10 text-accent flex items-center justify-center mr-4"
-                    >
-                      <svg xmlns="http://www.w3.org/2000/svg" className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                      </svg>
-                    </motion.div>
+                    <div className="flex-shrink-0 w-16 h-16 rounded-full bg-accent/10 text-accent flex items-center justify-center mr-4">
+                      {step.icon}
+                    </div>
                     <div className="w-12 h-12 rounded-full bg-secondary/10 text-secondary flex items-center justify-center text-xl font-bold">
                       {index + 1}
                     </div>
@@ -172,20 +102,12 @@ export default function ProcessSection({ dictionary, sectionId = "proceso" }: Pr
                   <p className="text-gray-600/90 leading-relaxed">{step.description}</p>
                 </div>
               </div>
-            </Wrapper>
+            </div>
           ))}
         </div>
 
-        <Wrapper
-          animation="fade"
-          delay={0.4}
-          duration={0.8}
-          className="max-w-2xl mx-auto mt-16 md:mt-20 px-4"
-        >
-          <motion.div 
-            whileHover={{ scale: 1.02 }}
-            className="p-6 md:p-8 text-center bg-white rounded-2xl border border-gray-100 shadow-lg"
-          >
+        <div className="max-w-2xl mx-auto mt-16 md:mt-20 px-4">
+          <div className="p-6 md:p-8 text-center bg-white rounded-2xl border border-gray-100 shadow-lg">
             <h4 className="mb-3 md:mb-4 text-xl md:text-2xl font-bold text-secondary">
               {isEnglish ? "Not sure what you need?" : "¿No estás seguro de lo que necesitas?"}
             </h4>
@@ -194,13 +116,8 @@ export default function ProcessSection({ dictionary, sectionId = "proceso" }: Pr
                 ? "My AI-powered diagnostic tool will analyze your business problem and recommend the most suitable service for you."
                 : "Mi herramienta de diagnóstico con IA analizará el problema de tu negocio y te recomendará el servicio más adecuado para ti."}
             </p>
-            <motion.a 
+            <a 
               href={isEnglish ? "/en/diagnosis" : "/es/diagnostico"}
-              whileHover={{ 
-                scale: 1.02,
-                boxShadow: "0 10px 30px rgba(0,0,0,0.1)",
-              }}
-              whileTap={{ scale: 0.98 }}
               className="inline-flex items-center px-6 md:px-8 py-3 md:py-4 text-base md:text-lg font-medium text-white bg-gradient-to-r from-accent to-primary rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 group"
             >
               {isEnglish ? "Try the diagnostic tool" : "Probar herramienta de diagnóstico"}
@@ -218,9 +135,9 @@ export default function ProcessSection({ dictionary, sectionId = "proceso" }: Pr
                   d="M13 7l5 5m0 0l-5 5m5-5H6" 
                 />
               </svg>
-            </motion.a>
-          </motion.div>
-        </Wrapper>
+            </a>
+          </div>
+        </div>
       </div>
     </section>
   );

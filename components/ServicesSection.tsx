@@ -1,8 +1,6 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import AnimationWrapper from './AnimationWrapper';
-import FallbackWrapper from './FallbackWrapper';
 import { useState, useEffect } from 'react';
 
 interface ServicesSectionProps {
@@ -32,53 +30,6 @@ interface ServicesSectionProps {
 }
 
 export default function ServicesSection({ dictionary, sectionId = "servicios" }: ServicesSectionProps) {
-  // Estado para controlar si usamos las animaciones o el fallback
-  const [useAnimations, setUseAnimations] = useState(true);
-  const [isClient, setIsClient] = useState(false);
-
-  useEffect(() => {
-    setIsClient(true);
-    
-    // Intentar detectar problemas con las animaciones
-    const checkAnimationSupport = () => {
-      try {
-        // Si estamos en un entorno que podría tener problemas, usar fallback
-        const isLowPowerDevice = 
-          window.navigator.userAgent.includes('Mobile') && 
-          navigator.hardwareConcurrency <= 4;
-          
-        setUseAnimations(!isLowPowerDevice);
-      } catch (error) {
-        // Si hay algún error, mejor usar el fallback
-        setUseAnimations(false);
-      }
-    };
-    
-    checkAnimationSupport();
-  }, []);
-
-  // Configuración de animaciones
-  const containerVariants = {
-    hidden: {},
-    visible: {
-      transition: {
-        staggerChildren: 0.1,
-      }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { 
-      opacity: 1, 
-      y: 0,
-      transition: { 
-        duration: 0.6,
-        ease: "easeOut"
-      } 
-    }
-  };
-
   // Servicios con iconos
   const services = [
     {
@@ -119,72 +70,38 @@ export default function ServicesSection({ dictionary, sectionId = "servicios" }:
     },
   ];
 
-  // Si no estamos en el cliente todavía, mostrar un div vacío para evitar errores de hidratación
-  if (!isClient) {
-    return <div id={sectionId} className="relative py-24"></div>;
-  }
-
-  // Elegir el componente wrapper basado en si usamos animaciones o no
-  const Wrapper = useAnimations ? AnimationWrapper : FallbackWrapper;
-
   return (
     <section id={sectionId} className="relative py-24">
       <div className="container relative">
-        <Wrapper
-          animation="fade"
-          className="max-w-3xl mx-auto mb-20 text-center"
-        >
+        <div className="max-w-3xl mx-auto mb-20 text-center">
           <h2 className="mb-6 text-4xl font-bold text-secondary md:text-5xl">{dictionary.services.title}</h2>
           <p className="text-xl text-gray-600">
             {dictionary.services.description}
           </p>
-        </Wrapper>
+        </div>
 
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-2">
           {services.map((service, index) => (
-            <Wrapper
+            <div
               key={index}
-              animation="slide-up"
-              delay={index * 0.1}
               className="p-8 bg-white rounded-xl border border-gray-100 shadow-lg hover:border-accent/20 transition-all duration-200"
             >
               <div className="flex flex-col h-full">
-                <motion.div 
-                  whileHover={{ scale: 1.05, rotate: 3 }}
-                  transition={{ 
-                    type: "spring",
-                    stiffness: 400,
-                    damping: 17
-                  }}
+                <div 
                   className="p-4 mb-6 rounded-full w-fit bg-primary/10 text-primary"
                 >
                   {service.icon}
-                </motion.div>
+                </div>
                 <h3 className="mb-4 text-2xl font-bold text-secondary">{service.title}</h3>
                 <p className="text-gray-600/90 leading-relaxed">{service.description}</p>
               </div>
-            </Wrapper>
+            </div>
           ))}
         </div>
         
         {/* Indicador sutil de scroll para indicar que hay más contenido */}
-        <Wrapper
-          animation="fade"
-          delay={0.8}
-          className="flex justify-center mt-12"
-        >
-          <motion.div
-            animate={{ 
-              y: [0, 10, 0],
-              opacity: [0.3, 0.6, 0.3]
-            }}
-            transition={{ 
-              duration: 2,
-              repeat: Infinity,
-              repeatType: "reverse"
-            }}
-            className="flex flex-col items-center"
-          >
+        <div className="flex justify-center mt-12">
+          <div className="flex flex-col items-center">
             <svg 
               xmlns="http://www.w3.org/2000/svg" 
               className="w-6 h-6 text-accent/60" 
@@ -194,8 +111,8 @@ export default function ServicesSection({ dictionary, sectionId = "servicios" }:
             >
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
             </svg>
-          </motion.div>
-        </Wrapper>
+          </div>
+        </div>
       </div>
     </section>
   );

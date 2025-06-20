@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useEffect } from 'react';
-import { motion } from 'framer-motion';
 
 interface CtaSectionProps {
   dictionary: {
@@ -54,16 +53,10 @@ export default function CtaSection({ dictionary, sectionId }: CtaSectionProps) {
     <section id={calculatedSectionId} className="relative py-24">
       <div className="container relative max-w-6xl mx-auto">
         {/* Elementos de beneficios destacados */}
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="grid grid-cols-1 gap-4 mb-16 md:grid-cols-3 md:gap-6"
-        >
+        <div className="grid grid-cols-1 gap-4 mb-16 md:grid-cols-3 md:gap-6">
           {benefitItems.map((item, index) => (
-            <motion.div 
+            <div 
               key={index}
-              whileHover={{ scale: 1.05 }}
               className="flex items-center px-7 py-4 space-x-3 bg-white shadow-lg backdrop-blur-sm rounded-xl border border-accent/10 group hover:border-accent/30 transition-all duration-300 w-full"
             >
               <div className="p-2 rounded-full bg-accent/10 text-accent flex-shrink-0">
@@ -81,23 +74,18 @@ export default function CtaSection({ dictionary, sectionId }: CtaSectionProps) {
               <span className="text-lg font-medium text-secondary group-hover:text-primary transition-colors duration-300">
                 {item.text}
               </span>
-            </motion.div>
+            </div>
           ))}
-        </motion.div>
+        </div>
 
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="max-w-4xl mx-auto text-center mb-12"
-        >
+        <div className="max-w-4xl mx-auto text-center mb-12">
           <h2 className="mb-6 text-4xl font-bold text-secondary md:text-5xl">
             {dictionary.cta.title}
           </h2>
           <p className="text-xl text-gray-600 md:text-2xl">
             {dictionary.cta.description}
           </p>
-        </motion.div>
+        </div>
 
         {/* Contenedor de Calendly con fondo blanco */}
         <div className="max-w-4xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden z-10 relative">

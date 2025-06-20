@@ -1,9 +1,6 @@
 'use client';
 
-import { motion } from 'framer-motion';
-import AnimationWrapper from './AnimationWrapper';
-import FallbackWrapper from './FallbackWrapper';
-import { useState, useEffect } from 'react';
+import React from 'react';
 
 interface WhyMeSectionProps {
   dictionary: {
@@ -31,53 +28,6 @@ interface WhyMeSectionProps {
 }
 
 export default function WhyMeSection({ dictionary, sectionId = "por-qué-yo" }: WhyMeSectionProps) {
-  // Estado para controlar si usamos las animaciones o el fallback
-  const [useAnimations, setUseAnimations] = useState(true);
-  const [isClient, setIsClient] = useState(false);
-
-  useEffect(() => {
-    setIsClient(true);
-    
-    // Intentar detectar problemas con las animaciones
-    const checkAnimationSupport = () => {
-      try {
-        // Si estamos en un entorno que podría tener problemas, usar fallback
-        const isLowPowerDevice = 
-          window.navigator.userAgent.includes('Mobile') && 
-          navigator.hardwareConcurrency <= 4;
-          
-        setUseAnimations(!isLowPowerDevice);
-      } catch (error) {
-        // Si hay algún error, mejor usar el fallback
-        setUseAnimations(false);
-      }
-    };
-    
-    checkAnimationSupport();
-  }, []);
-
-  // Configuración de animaciones
-  const containerVariants = {
-    hidden: {},
-    visible: {
-      transition: {
-        staggerChildren: 0.15
-      }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { 
-      opacity: 1, 
-      y: 0,
-      transition: { 
-        duration: 0.6,
-        ease: "easeOut"
-      } 
-    }
-  };
-
   // Razones con iconos
   const reasons = [
     {
@@ -109,58 +59,35 @@ export default function WhyMeSection({ dictionary, sectionId = "por-qué-yo" }: 
     },
   ];
 
-  // Si no estamos en el cliente todavía, mostrar un div vacío para evitar errores de hidratación
-  if (!isClient) {
-    return <div id={sectionId} className="relative py-24"></div>;
-  }
-
-  // Elegir el componente wrapper basado en si usamos animaciones o no
-  const Wrapper = useAnimations ? AnimationWrapper : FallbackWrapper;
-
   return (
     <section id={sectionId} className="relative py-24">
       <div className="container relative max-w-6xl mx-auto">
-        <Wrapper
-          animation="fade"
-          className="max-w-3xl mx-auto mb-16 text-center"
-        >
+        <div className="max-w-3xl mx-auto mb-16 text-center">
           <h2 className="mb-6 text-4xl font-bold text-secondary md:text-5xl">{dictionary.whyMe.title}</h2>
           <p className="text-xl text-gray-600">
             {dictionary.whyMe.description}
           </p>
-        </Wrapper>
+        </div>
 
         <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
           {reasons.map((reason, index) => (
-            <Wrapper
+            <div
               key={index}
-              animation="slide-up"
-              delay={index * 0.15}
               className="flex gap-6 p-8 transition-all duration-300 bg-white rounded-xl border border-gray-100 shadow-lg hover:border-accent/20 group"
             >
-              <motion.div 
-                whileHover={{ scale: 1.1, rotate: 5 }}
-                className="p-4 rounded-xl bg-accent/10 text-accent h-fit"
-              >
+              <div className="p-4 rounded-xl bg-accent/10 text-accent h-fit">
                 {reason.icon}
-              </motion.div>
+              </div>
               <div>
                 <h3 className="mb-3 text-2xl font-bold text-secondary">{reason.title}</h3>
                 <p className="text-gray-600/90 leading-relaxed">{reason.description}</p>
               </div>
-            </Wrapper>
+            </div>
           ))}
         </div>
 
-        <Wrapper
-          animation="fade"
-          delay={0.4}
-          className="max-w-2xl mx-auto mt-20"
-        >
-          <motion.div 
-            whileHover={{ scale: 1.02 }}
-            className="p-8 text-center bg-white rounded-xl border border-gray-100 shadow-lg"
-          >
+        <div className="max-w-2xl mx-auto mt-20">
+          <div className="p-8 text-center bg-white rounded-xl border border-gray-100 shadow-lg">
             <svg className="w-12 h-12 mx-auto mb-6 text-accent opacity-80" fill="currentColor" viewBox="0 0 24 24">
               <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
             </svg>
@@ -183,8 +110,8 @@ export default function WhyMeSection({ dictionary, sectionId = "por-qué-yo" }: 
                 </a>
               </div>
             </div>
-          </motion.div>
-        </Wrapper>
+          </div>
+        </div>
       </div>
     </section>
   );
