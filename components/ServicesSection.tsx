@@ -1,6 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import AnimationWrapper from './AnimationWrapper';
 
 interface ServicesSectionProps {
   dictionary: {
@@ -25,157 +26,92 @@ interface ServicesSectionProps {
       };
     };
   };
-  sectionId?: string; // Hacemos esta prop opcional para mantener compatibilidad
+  sectionId?: string;
 }
 
 export default function ServicesSection({ dictionary, sectionId = "servicios" }: ServicesSectionProps) {
-  // Iconos para los servicios
-  const serviceIcons = [
-    // Icono para optimización de procesos
-    <svg key="icon1" xmlns="http://www.w3.org/2000/svg" className="w-12 h-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
-    </svg>,
-    // Icono para automatización de marketing
-    <svg key="icon2" xmlns="http://www.w3.org/2000/svg" className="w-12 h-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z" />
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z" />
-    </svg>,
-    // Icono para auditoría de embudos
-    <svg key="icon3" xmlns="http://www.w3.org/2000/svg" className="w-12 h-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-    </svg>,
-    // Icono para auditoría UX/UI
-    <svg key="icon4" xmlns="http://www.w3.org/2000/svg" className="w-12 h-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-    </svg>,
-  ];
+  // Configuración de animaciones
+  const containerVariants = {
+    hidden: {},
+    visible: {
+      transition: {
+        staggerChildren: 0.1,
+      }
+    }
+  };
 
-  // Determinar si estamos en inglés o español basándonos en el contenido del diccionario
-  const isEnglish = dictionary.services.title === "Services";
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: { 
+        duration: 0.6,
+        ease: "easeOut"
+      } 
+    }
+  };
 
-  // Crear los servicios con traducciones
+  // Servicios con iconos
   const services = [
     {
       title: dictionary.services.service1.title,
       description: dictionary.services.service1.description,
-      icon: serviceIcons[0],
+      icon: (
+        <svg xmlns="http://www.w3.org/2000/svg" className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+        </svg>
+      ),
     },
     {
       title: dictionary.services.service2.title,
       description: dictionary.services.service2.description,
-      icon: serviceIcons[1],
+      icon: (
+        <svg xmlns="http://www.w3.org/2000/svg" className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+        </svg>
+      ),
     },
     {
       title: dictionary.services.service3.title,
       description: dictionary.services.service3.description,
-      icon: serviceIcons[2],
+      icon: (
+        <svg xmlns="http://www.w3.org/2000/svg" className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+        </svg>
+      ),
     },
     {
       title: dictionary.services.service4.title,
       description: dictionary.services.service4.description,
-      icon: serviceIcons[3],
+      icon: (
+        <svg xmlns="http://www.w3.org/2000/svg" className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z" />
+        </svg>
+      ),
     },
   ];
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        delayChildren: 0.1,
-        staggerChildren: 0.08,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { 
-      opacity: 0,
-      y: 5,
-      scale: 0.98
-    },
-    visible: {
-      opacity: 1,
-      y: 0,
-      scale: 1,
-      transition: {
-        type: "spring",
-        stiffness: 100,
-        damping: 15,
-        mass: 0.2,
-      },
-    },
-  };
-
-  // Microinteracciones mejoradas con Framer Motion
-  const cardHoverVariants = {
-    rest: { 
-      scale: 1,
-      boxShadow: "0px 10px 30px rgba(0, 0, 0, 0.05)",
-      backgroundColor: "rgba(255, 255, 255, 0.5)",
-      transition: { duration: 0.2, ease: "easeOut" }
-    },
-    hover: { 
-      scale: 1.02, 
-      boxShadow: "0px 20px 40px rgba(0, 0, 0, 0.1)",
-      backgroundColor: "rgba(255, 255, 255, 0.8)",
-      transition: { duration: 0.2, ease: "easeOut" }
-    }
-  };
-
-  const iconHoverVariants = {
-    rest: { 
-      scale: 1,
-      rotate: 0,
-      transition: { duration: 0.2, ease: "easeOut" }
-    },
-    hover: { 
-      scale: 1.05, 
-      rotate: 3,
-      transition: { duration: 0.2, ease: "easeOut" }
-    }
-  };
 
   return (
     <section id={sectionId} className="relative py-24">
       <div className="container relative">
-        <motion.div 
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ 
-            duration: 0.3,
-            ease: "easeOut"
-          }}
-          viewport={{ once: true, margin: "-20px" }}
+        <AnimationWrapper
+          animation="fade"
           className="max-w-3xl mx-auto mb-20 text-center"
         >
           <h2 className="mb-6 text-4xl font-bold text-secondary md:text-5xl">{dictionary.services.title}</h2>
           <p className="text-xl text-gray-600">
             {dictionary.services.description}
           </p>
-        </motion.div>
+        </AnimationWrapper>
 
-        <motion.div 
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ 
-            once: true, 
-            margin: "-20px",
-            amount: 0.2
-          }}
-          className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-2"
-        >
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-2">
           {services.map((service, index) => (
-            <motion.div
+            <AnimationWrapper
               key={index}
-              variants={itemVariants}
-              className="p-8 bg-white rounded-xl border border-gray-100 shadow-lg hover:border-accent/20 transition-all duration-200 will-change-transform"
-              style={{ 
-                minHeight: "280px",
-                backfaceVisibility: "hidden",
-                WebkitFontSmoothing: "subpixel-antialiased",
-              }}
+              animation="slide-up"
+              delay={index * 0.1}
+              className="p-8 bg-white rounded-xl border border-gray-100 shadow-lg hover:border-accent/20 transition-all duration-200"
             >
               <div className="flex flex-col h-full">
                 <motion.div 
@@ -192,15 +128,14 @@ export default function ServicesSection({ dictionary, sectionId = "servicios" }:
                 <h3 className="mb-4 text-2xl font-bold text-secondary">{service.title}</h3>
                 <p className="text-gray-600/90 leading-relaxed">{service.description}</p>
               </div>
-            </motion.div>
+            </AnimationWrapper>
           ))}
-        </motion.div>
+        </div>
         
         {/* Indicador sutil de scroll para indicar que hay más contenido */}
-        <motion.div 
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1, duration: 0.8 }}
+        <AnimationWrapper
+          animation="fade"
+          delay={0.8}
           className="flex justify-center mt-12"
         >
           <motion.div
@@ -225,7 +160,7 @@ export default function ServicesSection({ dictionary, sectionId = "servicios" }:
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
             </svg>
           </motion.div>
-        </motion.div>
+        </AnimationWrapper>
       </div>
     </section>
   );

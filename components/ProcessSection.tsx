@@ -1,6 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import AnimationWrapper from './AnimationWrapper';
 
 interface ProcessSectionProps {
   dictionary: {
@@ -60,46 +61,31 @@ export default function ProcessSection({ dictionary, sectionId = "proceso" }: Pr
   ];
 
   const containerVariants = {
-    hidden: { opacity: 0 },
+    hidden: {},
     visible: {
-      opacity: 1,
       transition: {
-        delayChildren: 0.1,
-        staggerChildren: 0.08,
-      },
-    },
+        staggerChildren: 0.15
+      }
+    }
   };
 
   const itemVariants = {
-    hidden: { 
-      opacity: 0,
-      y: 5,
-      scale: 0.98
-    },
-    visible: {
-      opacity: 1,
+    hidden: { opacity: 0, y: 20 },
+    visible: { 
+      opacity: 1, 
       y: 0,
-      scale: 1,
-      transition: {
-        type: "spring",
-        stiffness: 100,
-        damping: 15,
-        mass: 0.2,
-      },
-    },
+      transition: { 
+        duration: 0.6,
+        ease: "easeOut"
+      } 
+    }
   };
 
   return (
     <section id={sectionId} className="relative py-16 md:py-24">
       <div className="container relative px-6 md:px-8 max-w-6xl mx-auto">
-        <motion.div 
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ 
-            duration: 0.3,
-            ease: "easeOut"
-          }}
-          viewport={{ once: true, margin: "-20px" }}
+        <AnimationWrapper
+          animation="fade"
           className="max-w-3xl mx-auto mb-16 text-center"
         >
           <h2 className="mb-4 md:mb-6 text-3xl md:text-4xl lg:text-5xl font-bold text-secondary">
@@ -108,61 +94,56 @@ export default function ProcessSection({ dictionary, sectionId = "proceso" }: Pr
           <p className="text-lg md:text-xl text-gray-600 px-4">
             {dictionary.process.description}
           </p>
-        </motion.div>
+        </AnimationWrapper>
 
-        <motion.div 
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ 
-            once: true, 
-            margin: "-20px",
-            amount: 0.2
-          }}
-          className="grid gap-12 md:gap-6 md:grid-cols-3"
-        >
+        <div className="grid gap-12 md:gap-6 md:grid-cols-3">
           {steps.map((step, index) => (
-            <motion.div 
+            <AnimationWrapper
               key={index}
-              variants={itemVariants}
-              className="relative p-6 md:p-8 transition-all duration-200 bg-white rounded-2xl border border-gray-100 shadow-lg hover:border-accent/20 group will-change-transform"
-              style={{ 
-                backfaceVisibility: "hidden",
-                WebkitFontSmoothing: "subpixel-antialiased",
-              }}
+              animation="slide-up"
+              delay={index * 0.15}
+              className="relative"
             >
-              <div className="absolute -top-6 left-6 md:-left-6">
-                <div className="relative">
-                  <motion.div 
-                    className="w-12 h-12 bg-gradient-to-br from-accent to-primary rounded-2xl flex items-center justify-center text-white font-bold text-lg shadow-lg transform -rotate-3 group-hover:rotate-0 transition-all duration-200"
-                    whileHover={{
-                      scale: 1.05,
-                      rotate: 0,
-                      transition: {
+              {/* Línea conectora entre pasos (solo en desktop) */}
+              {index < steps.length - 1 && (
+                <div className="hidden md:block absolute top-16 left-[calc(100%_-_16px)] w-[calc(100%_-_32px)] h-0.5 bg-primary/20 z-0">
+                  <div className="absolute right-0 top-1/2 transform -translate-y-1/2 -translate-x-1/2 w-3 h-3 rotate-45 bg-primary"></div>
+                </div>
+              )}
+              
+              <div className="bg-white rounded-xl border border-gray-100 shadow-lg p-8 relative z-10 h-full hover:border-accent/20 transition-all duration-200">
+                <div className="flex flex-col h-full">
+                  <div className="flex items-center mb-6">
+                    <motion.div 
+                      whileHover={{ scale: 1.05, rotate: 5 }}
+                      transition={{ 
                         type: "spring",
                         stiffness: 400,
                         damping: 17
-                      }
-                    }}
-                  >
-                    {step.number}
-                  </motion.div>
-                  <div className="absolute inset-0 bg-accent/20 rounded-2xl blur-xl transform scale-75 group-hover:scale-100 transition-transform duration-200"></div>
+                      }}
+                      className="flex-shrink-0 w-16 h-16 rounded-full bg-accent/10 text-accent flex items-center justify-center mr-4"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                    </motion.div>
+                    <div className="w-12 h-12 rounded-full bg-secondary/10 text-secondary flex items-center justify-center text-xl font-bold">
+                      {index + 1}
+                    </div>
+                  </div>
+                  
+                  <h3 className="text-2xl font-bold text-secondary mb-4">{step.title}</h3>
+                  <p className="text-gray-600/90 leading-relaxed">{step.description}</p>
                 </div>
               </div>
-              
-              <div className="relative pt-8 md:pt-4">
-                <h3 className="mb-3 text-xl md:text-2xl font-bold text-secondary">{step.title}</h3>
-                <p className="text-gray-600/90 leading-relaxed text-base md:text-lg">{step.description}</p>
-              </div>
-            </motion.div>
+            </AnimationWrapper>
           ))}
-        </motion.div>
+        </div>
 
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4, duration: 0.8 }}
+        <AnimationWrapper
+          animation="fade"
+          delay={0.4}
+          duration={0.8}
           className="max-w-2xl mx-auto mt-16 md:mt-20 px-4"
         >
           <motion.div 
@@ -203,7 +184,7 @@ export default function ProcessSection({ dictionary, sectionId = "proceso" }: Pr
               </svg>
             </motion.a>
           </motion.div>
-        </motion.div>
+        </AnimationWrapper>
       </div>
     </section>
   );
