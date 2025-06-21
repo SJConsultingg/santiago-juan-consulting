@@ -30,6 +30,10 @@ export default function DiagnosticAssistant({ dictionary }: { dictionary: Dictio
   const [isFocused, setIsFocused] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [aiResponse, setAiResponse] = useState<any>(null);
+  const [showEmailModal, setShowEmailModal] = useState(false);
+  const [email, setEmail] = useState('');
+  const [isEmailValid, setIsEmailValid] = useState(false);
+  const [isEmailSubmitting, setIsEmailSubmitting] = useState(false);
   
   // Determinar si estamos en inglés o español
   const isEnglish = dictionary.services.title === "Services";
@@ -81,9 +85,11 @@ export default function DiagnosticAssistant({ dictionary }: { dictionary: Dictio
           // Mapear el servicio de fallback a uno de los servicios predefinidos
           const serviceId = mapServiceNameToId(data.fallbackResponse.mainService);
           console.log("DiagnosticAssistant: ID de servicio de fallback mapeado:", serviceId);
-          setRecommendation(serviceId);
+          
+          // Mostrar el modal de email antes de mostrar el resultado
           setIsAnalyzing(false);
           setProgress(0);
+          setShowEmailModal(true);
           return;
         }
         
@@ -141,12 +147,13 @@ export default function DiagnosticAssistant({ dictionary }: { dictionary: Dictio
       // Mapear el nombre del servicio al ID usado en la UI
       const serviceId = mapServiceNameToId(data.mainService);
       console.log("DiagnosticAssistant: ID de servicio mapeado:", serviceId);
-      setRecommendation(serviceId);
       
       // Simular un pequeño retraso para completar la animación
       setTimeout(() => {
         setIsAnalyzing(false);
         setProgress(0);
+        // Mostrar el modal de email antes de mostrar el resultado
+        setShowEmailModal(true);
       }, 500);
       
     } catch (error: any) {
@@ -253,6 +260,61 @@ export default function DiagnosticAssistant({ dictionary }: { dictionary: Dictio
     }
   };
   
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setEmail(value);
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    setIsEmailValid(emailRegex.test(value));
+  };
+  
+  const handleEmailSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!isEmailValid) return;
+    
+    setIsEmailSubmitting(true);
+    
+    try {
+      // Guardar en Airtable
+      const serviceId = mapServiceNameToId(aiResponse?.mainService);
+      const recommendedService = serviceContent[serviceId]?.title || aiResponse?.mainService;
+      
+      const saveResponse = await fetch('/api/save-diagnosis', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email,
+          problem,
+          recommendedService,
+          language: locale,
+          aiResponse
+        }),
+      });
+      
+      if (!saveResponse.ok) {
+        console.error('Error al guardar en Airtable');
+      }
+      
+      // Cerrar modal y mostrar resultado
+      setShowEmailModal(false);
+      setRecommendation(serviceId);
+      
+    } catch (error) {
+      console.error('Error al enviar el email:', error);
+      // Mostrar el resultado de todas formas si hay un error
+      setShowEmailModal(false);
+      setRecommendation(mapServiceNameToId(aiResponse?.mainService));
+    } finally {
+      setIsEmailSubmitting(false);
+    }
+  };
+  
+  const skipEmailCollection = () => {
+    setShowEmailModal(false);
+    setRecommendation(mapServiceNameToId(aiResponse?.mainService));
+  };
+  
   const formVariants = {
     hidden: { opacity: 0, y: 10 },
     visible: { 
@@ -297,10 +359,106 @@ export default function DiagnosticAssistant({ dictionary }: { dictionary: Dictio
     }
   };
   
+  const modalVariants = {
+    hidden: { opacity: 0, scale: 0.9 },
+    visible: { 
+      opacity: 1, 
+      scale: 1,
+      transition: { duration: 0.3 }
+    },
+    exit: { 
+      opacity: 0, 
+      scale: 0.9,
+      transition: { duration: 0.2 }
+    }
+  };
+  
   return (
     <div className="bg-white p-5 sm:p-8 rounded-xl shadow-lg border border-gray-100 relative overflow-hidden">
       {/* Borde decorativo superior */}
       <div className="absolute top-0 left-0 h-2 w-full bg-gradient-to-r from-primary to-accent"></div>
+      
+      {/* Modal de Email */}
+      <AnimatePresence>
+        {showEmailModal && (
+          <motion.div 
+            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <motion.div 
+              className="bg-white rounded-xl shadow-xl max-w-md w-full p-6"
+              variants={modalVariants}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+            >
+              <div className="text-center mb-6">
+                <div className="mx-auto w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center mb-4">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                  </svg>
+                </div>
+                <h3 className="text-xl font-bold text-gray-800 mb-2">
+                  {isEnglish 
+                    ? 'Get your complete diagnosis' 
+                    : 'Obtén tu diagnóstico completo'}
+                </h3>
+                <p className="text-gray-600">
+                  {isEnglish 
+                    ? 'Enter your email to receive a detailed report with additional insights and recommendations.' 
+                    : 'Ingresa tu email para recibir un informe detallado con insights y recomendaciones adicionales.'}
+                </p>
+              </div>
+              
+              <form onSubmit={handleEmailSubmit} className="space-y-4">
+                <div>
+                  <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+                    {isEnglish ? 'Email address' : 'Dirección de email'}
+                  </label>
+                  <input
+                    type="email"
+                    id="email"
+                    value={email}
+                    onChange={handleEmailChange}
+                    placeholder={isEnglish ? 'Your email address' : 'Tu dirección de email'}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-accent focus:border-accent"
+                    required
+                  />
+                </div>
+                
+                <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 pt-2">
+                  <button
+                    type="button"
+                    onClick={skipEmailCollection}
+                    className="order-2 sm:order-1 px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
+                  >
+                    {isEnglish ? 'Skip' : 'Omitir'}
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={!isEmailValid || isEmailSubmitting}
+                    className={`order-1 sm:order-2 flex-1 px-4 py-2 rounded-lg flex items-center justify-center
+                              transition-all ${!isEmailValid || isEmailSubmitting
+                                ? 'bg-gray-300 text-gray-500 cursor-not-allowed' 
+                                : 'bg-accent text-white hover:bg-accent/90'}`}
+                  >
+                    {isEmailSubmitting ? (
+                      <>
+                        <span className="mr-2 h-4 w-4 border-t-2 border-white rounded-full animate-spin"></span>
+                        {isEnglish ? 'Sending...' : 'Enviando...'}
+                      </>
+                    ) : (
+                      isEnglish ? 'Send me the diagnosis' : 'Enviarme el diagnóstico'
+                    )}
+                  </button>
+                </div>
+              </form>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
       
       <AnimatePresence mode="wait">
         {!recommendation ? (
@@ -517,6 +675,8 @@ export default function DiagnosticAssistant({ dictionary }: { dictionary: Dictio
                 setRecommendation(null);
                 setAiResponse(null);
                 setError(null);
+                setEmail('');
+                setIsEmailValid(false);
               }}
               className="block mx-auto mt-5 text-gray-500 underline hover:text-accent transition-colors"
               variants={itemVariants}
