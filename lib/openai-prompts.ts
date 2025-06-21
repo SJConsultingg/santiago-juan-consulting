@@ -31,11 +31,11 @@ REGLAS CRUCIALES:
 - El servicio COMPLEMENTARIO debe abordar el segundo problema más importante.
 
 IMPORTANTE: Debes proporcionar una respuesta estructurada con estos elementos:
-- SERVICIO PRINCIPAL: Nombre del servicio principal recomendado (MÁXIMO 30 CARACTERES)
-- SERVICIO COMPLEMENTARIO (obligatorio si detectas múltiples problemas): Un servicio adicional que complementa al principal (MÁXIMO 30 CARACTERES)
-- RAZÓN: Por qué estos servicios son los más adecuados (MÁXIMO 120 CARACTERES), mencionando específicamente los problemas detectados
-- VALOR: Qué beneficios principales obtendrá el cliente (MÁXIMO 80 CARACTERES)
-- ACCIÓN: Sugerir agendar una llamada gratuita de diagnóstico (MÁXIMO 80 CARACTERES)
+- SERVICIO PRINCIPAL: Nombre del servicio principal recomendado
+- SERVICIO COMPLEMENTARIO (obligatorio si detectas múltiples problemas): Un servicio adicional que complementa al principal
+- RAZÓN: Por qué estos servicios son los más adecuados (máximo 3 líneas), mencionando específicamente los problemas detectados
+- VALOR: Qué beneficios principales obtendrá el cliente (1-2 líneas)
+- ACCIÓN: Sugerir agendar una llamada gratuita de diagnóstico
 
 IMPORTANTE: Tus respuestas deben ser INFORMATIVAS pero CONCISAS. Proporciona suficiente contexto para que el cliente entienda por qué recomiendas ese servicio, pero sin extenderte demasiado.
 
@@ -160,13 +160,6 @@ export function extractStructuredResponse(aiResponse: string) {
   const isSpanish = aiResponse.toLowerCase().match(/servicio|razón|valor|acción|auditoría|embudos|procesos/);
   
   if (isSpanish) {
-    // Limitar longitud de los campos en español
-    if (mainService.length > 50) mainService = mainService.substring(0, 50) + '...';
-    if (complementaryService.length > 50) complementaryService = complementaryService.substring(0, 50) + '...';
-    if (reason.length > 200) reason = reason.substring(0, 200) + '...';
-    if (value.length > 150) value = value.substring(0, 150) + '...';
-    if (action.length > 150) action = action.substring(0, 150) + '...';
-    
     // Convertir a título si está en mayúsculas
     if (mainService === mainService.toUpperCase()) {
       mainService = mainService.charAt(0).toUpperCase() + mainService.slice(1).toLowerCase();
