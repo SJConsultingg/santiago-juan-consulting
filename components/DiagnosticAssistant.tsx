@@ -112,11 +112,6 @@ export default function DiagnosticAssistant({ dictionary }: { dictionary: Dictio
           if (data.mainService === data.mainService.toUpperCase()) {
             data.mainService = data.mainService.charAt(0).toUpperCase() + data.mainService.slice(1).toLowerCase();
           }
-          
-          // Limitar longitud del título del servicio
-          if (data.mainService.length > 50) {
-            data.mainService = data.mainService.substring(0, 50) + '...';
-          }
         }
         
         // Limpiar el servicio complementario si existe
@@ -124,10 +119,6 @@ export default function DiagnosticAssistant({ dictionary }: { dictionary: Dictio
           if (data.complementaryService === data.complementaryService.toUpperCase()) {
             data.complementaryService = data.complementaryService.charAt(0).toUpperCase() + 
               data.complementaryService.slice(1).toLowerCase();
-          }
-          
-          if (data.complementaryService.length > 50) {
-            data.complementaryService = data.complementaryService.substring(0, 50) + '...';
           }
         }
       }
