@@ -43,16 +43,17 @@ export async function POST(request: NextRequest) {
       console.log('API save-diagnosis: Generando reporte detallado con OpenAI');
       
       const prompt = language === 'en' 
-        ? `Create a direct, professional email that summarizes a diagnosis for a business problem: "${problem}". The recommended service is "${recommendedService}".
+        ? `Create a direct, professional email that summarizes a diagnosis for this business problem: "${problem}". The recommended service is "${recommendedService}".
 
 GUIDELINES:
 - Write in a direct, professional, and human style.
 - Don't use any user names.
 - Don't use asterisks or markdown formatting.
-- Avoid empty formalities like "Dear" or "I remain at your disposal".
+- CRITICAL: DO NOT claim to have seen or reviewed their website, business, or any other asset. Base your response ONLY on the problem statement provided.
+- Avoid empty formalities like "Dear", "I remain at your disposal", "cordial greetings", etc.
 - The tone should be that of a consultant with judgment who speaks clearly: approachable, without fluff.
 - The goal of the email is to deliver a useful diagnosis + suggest a deeper conversation if the user wants to scale their business in an orderly way.
-- Include 2-3 specific insights or action points they can implement immediately.
+- Include 2-3 specific insights or action points they can implement immediately, based ONLY on the information provided.
 - Keep it under 300 words.
 
 End the email with this signature:
@@ -60,16 +61,17 @@ End the email with this signature:
 Santiago Juan
 Business Process and Marketing Consultant`
 
-        : `Crea un correo directo y profesional que resuma un diagnóstico para un problema de negocio: "${problem}". El servicio recomendado es "${recommendedService}".
+        : `Crea un correo directo y profesional que resuma un diagnóstico para este problema de negocio: "${problem}". El servicio recomendado es "${recommendedService}".
 
 PAUTAS:
 - Escribe con un estilo directo, profesional y humano.
 - No uses nombres de usuario.
 - No uses asteriscos ni formato markdown.
-- Evita formalidades vacías como "estimado/a" o "quedo a su disposición".
+- CRÍTICO: NO afirmes haber visto o revisado su sitio web, negocio o cualquier otro activo. Basa tu respuesta ÚNICAMENTE en la descripción del problema proporcionada.
+- Evita formalidades vacías como "estimado/a", "quedo a su disposición", "saludos cordiales", etc.
 - El tono debe ser de un consultor con criterio que habla claro: cercano, sin vender humo.
 - El objetivo del correo es entregar un diagnóstico útil + sugerir una conversación más profunda si el usuario quiere escalar su negocio de forma ordenada.
-- Incluye 2-3 ideas o puntos de acción específicos que puedan implementar de inmediato.
+- Incluye 2-3 ideas o puntos de acción específicos que puedan implementar de inmediato, basados ÚNICAMENTE en la información proporcionada.
 - Mantenlo por debajo de 300 palabras.
 
 Cierra el correo con esta firma:
@@ -80,7 +82,7 @@ Consultor en procesos y marketing`;
       const response = await openai.chat.completions.create({
         model: process.env.OPENAI_MODEL || "gpt-3.5-turbo",
         messages: [
-          { role: "system", content: "You are a direct, professional business consultant who communicates clearly without unnecessary formalities." },
+          { role: "system", content: "You are a direct, professional business consultant who communicates clearly without unnecessary formalities. You NEVER claim to have reviewed materials you haven't seen. You base your advice ONLY on the information explicitly provided." },
           { role: "user", content: prompt }
         ],
         temperature: 0.7,
