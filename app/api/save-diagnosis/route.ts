@@ -34,16 +34,11 @@ export async function POST(request: NextRequest) {
     const record = {
       fields: {
         'Email Address': email,
-        'First Name': '', // Dejamos vacío ya que no tenemos este dato
-        'Last Name': '', // Dejamos vacío ya que no tenemos este dato
+        'Problema': problem,
+        'Servicio Recomendado': recommendedService,
         'Date Added': new Date().toISOString(),
-        'Engagement Score': 1, // Valor por defecto
-        'JSON': JSON.stringify({
-          problem,
-          recommendedService,
-          language,
-          aiResponse
-        })
+        'Idioma': language || 'es',
+        'JSON': JSON.stringify(aiResponse || {})
       }
     };
     
