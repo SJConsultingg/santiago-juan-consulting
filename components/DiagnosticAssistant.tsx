@@ -615,7 +615,7 @@ export default function DiagnosticAssistant({ dictionary }: { dictionary: Dictio
             )}
             
             <motion.p 
-              className="mb-4 sm:mb-5 text-gray-600 text-base sm:text-lg leading-relaxed" 
+              className="mb-4 sm:mb-5 text-gray-600 text-base sm:text-lg leading-relaxed whitespace-pre-wrap" 
               variants={itemVariants}
             >
               {/* Mostrar la razón de la recomendación */}
@@ -628,7 +628,7 @@ export default function DiagnosticAssistant({ dictionary }: { dictionary: Dictio
                 className="p-4 sm:p-6 bg-primary/5 rounded-lg mb-5 sm:mb-6 text-gray-600 border border-primary/20"
                 variants={itemVariants}
               >
-                <p className="text-left italic text-sm sm:text-base leading-relaxed">
+                <p className="text-left italic text-sm sm:text-base leading-relaxed whitespace-pre-wrap">
                   "{aiResponse.value}"
                 </p>
               </motion.div>
