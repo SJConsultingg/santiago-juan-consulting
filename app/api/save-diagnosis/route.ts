@@ -43,13 +43,44 @@ export async function POST(request: NextRequest) {
       console.log('API save-diagnosis: Generando reporte detallado con OpenAI');
       
       const prompt = language === 'en' 
-        ? `Based on the user's problem: "${problem}", create a detailed report that explains what they should do to solve their issue related to "${recommendedService}". The report should be informative and helpful, but leave them wanting more so they schedule a call. Include 3-4 specific action points they can implement immediately, but hint that a personalized consultation would provide much more value. Keep it under 400 words and make it sound professional but conversational. Sign it as "Santiago Juan, Business Consultant".`
-        : `Basado en el problema del usuario: "${problem}", crea un reporte detallado que explique lo que deberían hacer para resolver su problema relacionado con "${recommendedService}". El reporte debe ser informativo y útil, pero dejarlos con ganas de más para que agenden una llamada. Incluye 3-4 puntos de acción específicos que puedan implementar inmediatamente, pero insinúa que una consultoría personalizada les proporcionaría mucho más valor. Mantenlo por debajo de 400 palabras y hazlo sonar profesional pero conversacional. Fírmalo como "Santiago Juan, Consultor de Negocios".`;
+        ? `Create a direct, professional email that summarizes a diagnosis for a business problem: "${problem}". The recommended service is "${recommendedService}".
+
+GUIDELINES:
+- Write in a direct, professional, and human style.
+- Don't use any user names.
+- Don't use asterisks or markdown formatting.
+- Avoid empty formalities like "Dear" or "I remain at your disposal".
+- The tone should be that of a consultant with judgment who speaks clearly: approachable, without fluff.
+- The goal of the email is to deliver a useful diagnosis + suggest a deeper conversation if the user wants to scale their business in an orderly way.
+- Include 2-3 specific insights or action points they can implement immediately.
+- Keep it under 300 words.
+
+End the email with this signature:
+
+Santiago Juan
+Business Process and Marketing Consultant`
+
+        : `Crea un correo directo y profesional que resuma un diagnóstico para un problema de negocio: "${problem}". El servicio recomendado es "${recommendedService}".
+
+PAUTAS:
+- Escribe con un estilo directo, profesional y humano.
+- No uses nombres de usuario.
+- No uses asteriscos ni formato markdown.
+- Evita formalidades vacías como "estimado/a" o "quedo a su disposición".
+- El tono debe ser de un consultor con criterio que habla claro: cercano, sin vender humo.
+- El objetivo del correo es entregar un diagnóstico útil + sugerir una conversación más profunda si el usuario quiere escalar su negocio de forma ordenada.
+- Incluye 2-3 ideas o puntos de acción específicos que puedan implementar de inmediato.
+- Mantenlo por debajo de 300 palabras.
+
+Cierra el correo con esta firma:
+
+Santiago Juan
+Consultor en procesos y marketing`;
       
       const response = await openai.chat.completions.create({
         model: process.env.OPENAI_MODEL || "gpt-3.5-turbo",
         messages: [
-          { role: "system", content: "You are a helpful business consultant specializing in marketing, processes, and web optimization." },
+          { role: "system", content: "You are a direct, professional business consultant who communicates clearly without unnecessary formalities." },
           { role: "user", content: prompt }
         ],
         temperature: 0.7,
