@@ -106,14 +106,6 @@ export default function DiagnosticAssistant({ dictionary }: { dictionary: Dictio
       
       // Procesar y limpiar la respuesta para español
       if (!isEnglish) {
-        // Limitar la longitud de los campos para español
-        if (data.reason && data.reason.length > 200) {
-          data.reason = data.reason.substring(0, 200) + '...';
-        }
-        if (data.value && data.value.length > 150) {
-          data.value = data.value.substring(0, 150) + '...';
-        }
-        
         // Asegurarse de que el servicio principal tenga un formato limpio
         if (data.mainService) {
           // Convertir a título si está en mayúsculas

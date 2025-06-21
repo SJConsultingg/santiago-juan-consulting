@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 // Airtable API token
 const AIRTABLE_API_KEY = 'patYYgtBReShy6Wkz.86bbbd49e86e9f7230c5a88646a1666b5c86337b9c636dfb938a44ccea1c9e32';
-const AIRTABLE_BASE_ID = 'patYYgtBReShy6Wkz';
+const AIRTABLE_BASE_ID = 'appqgUSVpBkFjVlNv';
 const AIRTABLE_TABLE_NAME = 'Diagnósticos';
 
 export async function POST(request: NextRequest) {
