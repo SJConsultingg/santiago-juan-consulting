@@ -39,7 +39,7 @@ export async function POST(request: NextRequest) {
         'Authorization': `Bearer ${AIRTABLE_API_KEY}`,
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(record)
+      body: JSON.stringify({ records: [record] })
     });
     
     // Verificar la respuesta de Airtable
