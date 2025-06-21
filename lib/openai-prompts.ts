@@ -39,6 +39,11 @@ IMPORTANTE: Debes proporcionar una respuesta estructurada con estos elementos:
 
 IMPORTANTE: Tus respuestas deben ser INFORMATIVAS pero CONCISAS. Proporciona suficiente contexto para que el cliente entienda por qué recomiendas ese servicio, pero sin extenderte demasiado.
 
+FORMATO DE RESPUESTA:
+- Utiliza párrafos cortos para la Razón y el Valor.
+- Si sugieres acciones o puntos específicos, puedes usar una lista numerada simple.
+- Mantén un lenguaje claro y directo.
+
 Mantén un tono profesional pero cercano. No inventes información adicional sobre los servicios.`;
   } else {
     return `You are an expert consultant in processes, marketing, and automation for startups and digital businesses, working for Santiago Juan Consulting. Your goal is to analyze the client's problem and recommend the most suitable service, or a combination of services if the case requires it, from these four specific services:
@@ -66,6 +71,11 @@ IMPORTANT: You must provide a structured response with these elements:
 - REASON: Why these services are the most appropriate (maximum 3 lines), specifically mentioning the detected problems
 - VALUE: What main benefits the client will obtain (1-2 lines)
 - ACTION: Suggest scheduling a free diagnostic call
+
+RESPONSE FORMAT:
+- Use short paragraphs for the Reason and Value.
+- If you suggest specific actions or points, you can use a simple numbered list.
+- Keep the language clear and direct.
 
 Maintain a professional but approachable tone. Do not invent additional information about the services.`;
   }
@@ -227,14 +237,13 @@ export function extractStructuredResponse(aiResponse: string) {
 function cleanFormatting(text: string): string {
   if (!text) return '';
   
-  // Quitar asteriscos, almohadillas y otros caracteres de markdown
+  // Quitar asteriscos, almohadillas y otros caracteres de markdown, pero conservar saltos de línea
   let cleanedText = text
     .replace(/\*\*/g, '') // Quitar dobles asteriscos (negrita)
     .replace(/\*/g, '') // Quitar asteriscos simples (cursiva)
     .replace(/#+\s/g, '') // Quitar almohadillas de títulos
-    .replace(/^[-*+]\s/gm, '') // Quitar marcadores de listas
-    .replace(/^\d+\.\s/gm, '') // Quitar números de listas ordenadas
-    .replace(/\n+/g, ' ') // Reemplazar saltos de línea con espacios
+    .replace(/^[-*+]\s/gm, '') // Quitar marcadores de listas no numeradas
+    // No reemplazamos saltos de línea, los conservamos.
     .trim();
   
   return cleanedText;
