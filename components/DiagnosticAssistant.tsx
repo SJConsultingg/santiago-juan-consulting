@@ -390,61 +390,68 @@ export default function DiagnosticAssistant({ dictionary }: { dictionary: Dictio
             exit={{ opacity: 0 }}
           >
             <motion.div 
-              className="bg-white rounded-xl shadow-xl max-w-md w-full p-6"
+              className="bg-white rounded-xl shadow-xl max-w-md w-full p-6 sm:p-7 border border-gray-100"
               variants={modalVariants}
               initial="hidden"
               animate="visible"
               exit="exit"
             >
               <div className="text-center mb-6">
-                <div className="mx-auto w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center mb-4">
+                <div className="mx-auto w-16 h-16 bg-accent/15 rounded-full flex items-center justify-center mb-4 shadow-inner">
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                   </svg>
                 </div>
                 <h3 className="text-xl font-bold text-gray-800 mb-2">
                   {isEnglish 
-                    ? 'Get your complete diagnosis' 
-                    : 'Obtén tu diagnóstico completo'}
+                    ? 'Your diagnosis is ready' 
+                    : 'Tu diagnóstico ya está listo'}
                 </h3>
                 <p className="text-gray-600">
                   {isEnglish 
-                    ? 'Enter your email to receive a detailed report with additional insights and recommendations.' 
-                    : 'Ingresa tu email para recibir un informe detallado con insights y recomendaciones adicionales.'}
+                    ? 'Leave me your email and I\'ll send you the complete report with concrete ideas to improve today. No spam, no weird robots. Just real value.' 
+                    : 'Dejame tu mail y te mando el informe completo con ideas concretas para mejorar hoy mismo. Nada de spam, ni robots raros. Solo valor real.'}
                 </p>
               </div>
               
-              <form onSubmit={handleEmailSubmit} className="space-y-4">
+              <form onSubmit={handleEmailSubmit} className="space-y-5">
                 <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+                  <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1.5">
                     {isEnglish ? 'Email address' : 'Dirección de email'}
                   </label>
-                  <input
-                    type="email"
-                    id="email"
-                    value={email}
-                    onChange={handleEmailChange}
-                    placeholder={isEnglish ? 'Your email address' : 'Tu dirección de email'}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-accent focus:border-accent"
-                    required
-                  />
+                  <div className="relative">
+                    <input
+                      type="email"
+                      id="email"
+                      value={email}
+                      onChange={handleEmailChange}
+                      placeholder={isEnglish ? 'example@yourbusiness.com' : 'ejemplo@tunegocio.com'}
+                      className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-accent focus:border-accent transition-all shadow-sm"
+                      required
+                    />
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                      </svg>
+                    </div>
+                  </div>
                 </div>
                 
-                <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 pt-2">
+                <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 pt-1">
                   <button
                     type="button"
                     onClick={skipEmailCollection}
-                    className="order-2 sm:order-1 px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
+                    className="order-2 sm:order-1 px-4 py-2.5 text-gray-600 hover:text-gray-800 transition-colors"
                   >
                     {isEnglish ? 'Skip' : 'Omitir'}
                   </button>
                   <button
                     type="submit"
                     disabled={!isEmailValid || isEmailSubmitting}
-                    className={`order-1 sm:order-2 flex-1 px-4 py-2 rounded-lg flex items-center justify-center
+                    className={`order-1 sm:order-2 flex-1 px-4 py-2.5 rounded-lg flex items-center justify-center
                               transition-all ${!isEmailValid || isEmailSubmitting
                                 ? 'bg-gray-300 text-gray-500 cursor-not-allowed' 
-                                : 'bg-accent text-white hover:bg-accent/90'}`}
+                                : 'bg-accent text-white hover:bg-accent/90 shadow-md hover:shadow-lg'}`}
                   >
                     {isEmailSubmitting ? (
                       <>
@@ -452,7 +459,12 @@ export default function DiagnosticAssistant({ dictionary }: { dictionary: Dictio
                         {isEnglish ? 'Sending...' : 'Enviando...'}
                       </>
                     ) : (
-                      isEnglish ? 'Send me the diagnosis' : 'Enviarme el diagnóstico'
+                      <>
+                        {isEnglish ? 'View my diagnosis' : 'Ver mi diagnóstico'}
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                        </svg>
+                      </>
                     )}
                   </button>
                 </div>
