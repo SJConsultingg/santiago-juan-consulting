@@ -384,17 +384,19 @@ export default function DiagnosticAssistant({ dictionary }: { dictionary: Dictio
       <AnimatePresence>
         {showEmailModal && (
           <motion.div 
-            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[9999] flex items-center justify-center p-4 overflow-y-auto"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
+            style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0 }}
           >
             <motion.div 
-              className="bg-white rounded-xl shadow-xl max-w-md w-full p-6 sm:p-7 border border-gray-100"
+              className="bg-white rounded-xl shadow-xl max-w-md w-full p-6 sm:p-7 border border-gray-100 mx-auto my-4 relative"
               variants={modalVariants}
               initial="hidden"
               animate="visible"
               exit="exit"
+              style={{ maxHeight: 'calc(100vh - 2rem)', overflowY: 'auto' }}
             >
               <div className="text-center mb-6">
                 <div className="mx-auto w-16 h-16 bg-accent/15 rounded-full flex items-center justify-center mb-4 shadow-inner">
