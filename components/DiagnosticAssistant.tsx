@@ -261,6 +261,13 @@ export default function DiagnosticAssistant({ dictionary }: { dictionary: Dictio
       const serviceId = mapServiceNameToId(aiResponse?.mainService);
       const recommendedService = serviceContent[serviceId]?.title || aiResponse?.mainService;
       
+      console.log("DiagnosticAssistant: Enviando datos a Airtable:", {
+        email,
+        problemLength: problem?.length,
+        recommendedService,
+        language: locale
+      });
+      
       const saveResponse = await fetch('/api/save-diagnosis', {
         method: 'POST',
         headers: {
@@ -275,8 +282,18 @@ export default function DiagnosticAssistant({ dictionary }: { dictionary: Dictio
         }),
       });
       
+      const responseData = await saveResponse.json();
+      
       if (!saveResponse.ok) {
-        console.error('Error al guardar en Airtable');
+        console.error('DiagnosticAssistant: Error al guardar en Airtable', {
+          status: saveResponse.status,
+          statusText: saveResponse.statusText,
+          data: responseData
+        });
+        // Mostrar un mensaje al usuario (opcional)
+        alert(responseData.error || 'Error al guardar tus datos. Por favor intenta nuevamente.');
+      } else {
+        console.log('DiagnosticAssistant: Datos guardados exitosamente en Airtable', responseData);
       }
       
       // Cerrar modal y mostrar resultado
@@ -284,7 +301,9 @@ export default function DiagnosticAssistant({ dictionary }: { dictionary: Dictio
       setRecommendation(serviceId);
       
     } catch (error) {
-      console.error('Error al enviar el email:', error);
+      console.error('DiagnosticAssistant: Error al enviar el email:', error);
+      // Mostrar un mensaje al usuario (opcional)
+      alert('Error al procesar tu solicitud. Por favor intenta nuevamente.');
       // Mostrar el resultado de todas formas si hay un error
       setShowEmailModal(false);
       setRecommendation(mapServiceNameToId(aiResponse?.mainService));

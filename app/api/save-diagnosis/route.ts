@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 // Airtable API token
 const AIRTABLE_API_KEY = 'patYYgtBReShy6Wkz.86bbbd49e86e9f7230c5a88646a1666b5c86337b9c636dfb938a44ccea1c9e32';
 const AIRTABLE_BASE_ID = 'appqgUSVpBkFjVlNv';
-const AIRTABLE_TABLE_NAME = 'Email List';
+const AIRTABLE_TABLE_NAME = 'Email Registers';
 
 export async function POST(request: NextRequest) {
   try {
@@ -34,11 +34,16 @@ export async function POST(request: NextRequest) {
     const record = {
       fields: {
         'Email Address': email,
-        'Problema': problem,
-        'Servicio Recomendado': recommendedService,
+        'First Name': '', // Dejamos vacío ya que no tenemos este dato
+        'Last Name': '', // Dejamos vacío ya que no tenemos este dato
         'Date Added': new Date().toISOString(),
-        'Idioma': language || 'es',
-        'JSON': aiResponse ? JSON.stringify(aiResponse) : '{}'
+        'Engagement Score': 1, // Valor por defecto
+        'JSON': JSON.stringify({
+          problem,
+          recommendedService,
+          language,
+          aiResponse
+        })
       }
     };
     
